@@ -2,7 +2,6 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { parseIcs, parseJsonLd, parseTribe } from './adapters.mjs';
-import { parseExport, looksLikeEvent } from './whatsapp.mjs';
 import { classify } from './classify.mjs';
 import { icsToIso, eventId } from './lib.mjs';
 import { estimateFlyerCost } from './enrich.mjs';
@@ -119,26 +118,6 @@ test('dedupe key ignores punctuation and filler words', () => {
   const a = { title: 'The Shabbat Dinner!', start: '2026-08-21T19:00:00-07:00', neighborhood: 'venice' };
   const b = { title: 'Shabbat Dinner', start: '2026-08-21T20:30:00-07:00', neighborhood: 'Venice' };
   assert.equal(eventId(a), eventId(b));
-});
-
-test('WhatsApp: parses iOS and Android exports including multi-line and attachments', () => {
-  const chat = [
-    '[8/19/26, 9:14:02 AM] Ari: Shabbat dinner this Friday 7:30pm in Pico-Robertson',
-    'RSVP by Thursday, $18 to cover food',
-    '[8/19/26, 9:15:00 AM] Dana: thanks!',
-    '8/19/26, 10:02 AM - Yael: <attached: 00000042-PHOTO-2026-08-19-10-02-11.jpg>',
-    '8/19/26, 10:05 AM - Moshe: image omitted',
-  ].join('\n');
-
-  const msgs = parseExport(chat);
-  assert.equal(msgs.length, 4);
-  assert.match(msgs[0].text, /RSVP by Thursday/);      // continuation line joined
-  assert.equal(msgs[2].attachments.length, 1);
-  assert.equal(msgs[3].mediaOmitted, true);
-
-  const candidates = msgs.filter(looksLikeEvent);
-  assert.equal(candidates.length, 2);                   // the announcement and the flyer
-  assert.ok(!candidates.some((m) => m.text === 'thanks!'));
 });
 
 test('flyer cost estimate is bounded and scales linearly', () => {

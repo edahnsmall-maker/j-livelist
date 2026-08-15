@@ -6,7 +6,8 @@ and level of observance.
 This is a **proof of concept**, built to answer three questions before anyone
 commits to building the real thing:
 
-1. Can we ship a web app people pay $5 for?
+1. Can we ship a web app worth paying for? (The app ships **free** — the $5 gate
+   is parked behind a flag in `web/app.js`.)
 2. Can we harvest events from event sites and the WhatsApp thread?
 3. Can we find out cheaply, before building?
 
@@ -48,9 +49,14 @@ for why that distinction matters (short version: protocol bots violate Meta's
 terms and get phone numbers banned).
 
 ```bash
-npm run whatsapp -- chat.txt --media ./media --out data/whatsapp.json          # parse only
-npm run whatsapp -- chat.txt --media ./media --llm --out data/whatsapp.json    # + extract
+npm run whatsapp -- "_chat.txt" --media . --check    # health check: fully local, writes nothing
+npm run whatsapp -- "_chat.txt" --media . --llm      # extract events
 ```
+
+**Run `--check` first.** It reports messages parsed, authors, date range, date
+format, attachments matched, and unparsed lines, so you know whether the export
+is good before anything else happens. Full instructions:
+[`docs/whatsapp-export.md`](docs/whatsapp-export.md).
 
 `--llm` needs `ANTHROPIC_API_KEY` (or an `ant auth login` profile) and
 `npm i @anthropic-ai/sdk`. It reads flyer images as well as text. Flyer parsing
@@ -69,6 +75,7 @@ harvester/enrich.mjs      Claude pass: flyer vision + structured extraction
 harvester/whatsapp.mjs    WhatsApp export parser
 web/                      the app — static, no framework
 docs/feasibility.md       the actual answers
+docs/whatsapp-export.md   how to export the thread and verify it parsed
 ```
 
 ## The one design decision worth knowing

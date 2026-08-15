@@ -3,7 +3,10 @@
    otherwise fetches data.json. No framework, no build step. */
 
 (async function () {
-  const FREE_EVENTS = 6; // how many show before the paywall demo kicks in
+  // The list is free. The paywall was built as a demand test and is parked, not
+  // deleted — flip PAYWALL to true to run that test later without rebuilding it.
+  const PAYWALL = false;
+  const FREE_EVENTS = 6; // only consulted when PAYWALL is on
 
   const data = window.__DATA__ || (await fetch('data.json').then((r) => r.json()));
   const { taxonomy, events } = data;
@@ -183,7 +186,7 @@
     ]);
   }
 
-  const unlocked = () => localStorage.getItem('jll_unlocked') === '1';
+  const unlocked = () => !PAYWALL || localStorage.getItem('jll_unlocked') === '1';
 
   function render() {
     const f = readFilters();

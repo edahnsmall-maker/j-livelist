@@ -1,6 +1,22 @@
 {
   "_comment": "Registry of candidate LA Jewish event sources and how each one can be harvested. IMPORTANT: the `verified` flag is false on everything, because the sandbox this was written in has outbound network access disabled. Run `npm run harvest -- --probe` from a normal machine to test every endpoint and flip these to true/false with real evidence. Do not trust a URL in this file until the probe confirms it.",
 
+  "_platformPlaybook": {
+    "_comment": "The most useful reframing we found: do not think in terms of 'event sites'. Think in terms of what platform a given organization's website is built on, because the platform decides the method. You are not harvesting Eventbrite; you are harvesting a list of orgs, and each org's platform tells you how. Identify the platform once per org, then the adapter is already written.",
+    "howToIdentify": "Open the org's events page and check, in order: (1) view-source for 'shulcloud' or a /ical link; (2) fetch /wp-json/tribe/events/v1/events; (3) view-source for 'application/ld+json'; (4) look at where the RSVP button points — eventbrite.com, lu.ma, partiful.com. One of those four almost always hits.",
+    "platforms": [
+      { "platform": "ShulCloud", "openness": "open", "method": "ics", "note": "Powers a large share of synagogue websites and ships a documented iCal/WebCal export ('Export/WebCal' → 'iCal/WebCal Export' → 'SETUP ICAL'). This is the single best find: a sanctioned, structured, per-shul feed. If a shul runs ShulCloud, it is solved." },
+      { "platform": "WordPress + The Events Calendar", "openness": "open", "method": "tribe", "note": "Free REST route at /wp-json/tribe/events/v1/events, on by default. Very common on federation and synagogue sites." },
+      { "platform": "Wix / Squarespace events", "openness": "open", "method": "jsonld", "note": "Both emit schema.org Event JSON-LD so events show up in Google. Read the page, take the JSON-LD." },
+      { "platform": "Chabad.org center sites", "openness": "open", "method": "jsonld", "note": "Dozens of independent LA centers on one uniform platform. One adapter likely unlocks many centers at once — the highest leverage per hour of work after ShulCloud." },
+      { "platform": "Eventbrite", "openness": "per-organizer", "method": "eventbrite-org", "note": "Organizer pages carry JSON-LD per event and are readable. Platform-wide search is closed. You must know the organizer." },
+      { "platform": "Luma (lu.ma)", "openness": "per-organizer", "method": "jsonld", "note": "Public calendar and event pages render server-side and read fine without auth. Luma's official API (public-api.luma.com, x-luma-api-key) is scoped to calendars YOU own — it is an organizer tool, not a discovery tool. So: per-calendar, and you need the slug." },
+      { "platform": "Partiful", "openness": "per-organizer", "method": "jsonld", "note": "Public event pages readable without login, no official API. Heavily used by exactly the 20s-30s demographic, but events are usually shared by link rather than listed, so it is a link-in, not a crawl-out, source." },
+      { "platform": "Facebook Events", "openness": "closed", "method": "manual", "note": "No public API since 2018. Active and unreadable." },
+      { "platform": "Meetup", "openness": "restricted", "method": "manual", "note": "GraphQL behind OAuth and a paid tier. Low Jewish-event density in LA." }
+    ]
+  },
+
   "_methods": {
     "ics": "Public iCalendar feed. Best case. Structured, stable, explicitly published for syndication, no legal ambiguity.",
     "tribe": "WordPress 'The Events Calendar' plugin REST API at /wp-json/tribe/events/v1/events. Free, bundled with the plugin, on by default. Extremely common on synagogue and federation sites.",
@@ -141,6 +157,36 @@
       "verified": false,
       "priority": 3,
       "notes": "Increasingly where younger/indie organizers post. Public calendar pages render structured data server-side and are readable without auth. You need to know the calendar slug — there is no useful global search, so slugs get collected by hand once per organizer."
+    },
+    {
+      "id": "shulcloud-example",
+      "name": "ShulCloud iCal (template — copy per shul)",
+      "homepage": null,
+      "method": "ics",
+      "probe": [],
+      "verified": false,
+      "priority": 1,
+      "notes": "Not a source on its own: a template. For each LA shul running ShulCloud, walk its calendar page to Export/WebCal → iCal/WebCal Export → SETUP ICAL, copy the webcal:// URL, change the scheme to https://, and add it here as its own entry with method 'ics'. Every one of these is an open, sanctioned, structured feed — no scraping, no ambiguity, no ToS question. Do these before writing another scraper."
+    },
+    {
+      "id": "luma-calendars",
+      "name": "Luma calendars (per organizer)",
+      "homepage": "https://lu.ma/",
+      "method": "jsonld",
+      "probe": ["https://lu.ma/discover"],
+      "verified": false,
+      "priority": 3,
+      "notes": "Public calendar pages read fine without auth. Luma's official API is organizer-scoped (it manages calendars you own), so it does not help with discovery — you collect calendar slugs by hand, once per organizer, then poll them."
+    },
+    {
+      "id": "partiful",
+      "name": "Partiful (per organizer)",
+      "homepage": "https://partiful.com/",
+      "method": "jsonld",
+      "probe": [],
+      "verified": false,
+      "priority": 4,
+      "notes": "Public event pages are readable, but Partiful is link-shared rather than browsable — there is no listing to crawl. Treat it as an inbound format: when someone drops a partiful.com link in the WhatsApp thread, follow it and parse the page. That path already works via the WhatsApp ingest."
     },
     {
       "id": "whatsapp-la-events",

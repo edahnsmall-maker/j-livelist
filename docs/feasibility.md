@@ -44,14 +44,72 @@ you own the curation.** If a paying user shows up at an event you labeled level 
 and finds a mechitza, that's a refund and a bad story. This is why the data model
 below refuses to guess.
 
-**Recommendation:** ship the $5 gate as a demand test, not as the plan. Decide the
-business model after you have 50 data points on whether anyone clicks it.
+**Decision (August 2026): the app ships free.** The paywall is parked behind a
+flag — `PAYWALL = false` at the top of `web/app.js` — rather than deleted, so the
+demand test is one line away whenever it's worth running. Starting free is the
+right call: with no proven list, a gate mostly measures how much you were
+willing to charge for something nobody had evaluated yet. Get the list good,
+then decide whether to charge, and probably charge organizers rather than
+attendees.
 
 ---
 
 ## 2. Can we harvest the event sites and the WhatsApp channel?
 
 Partly. The honest breakdown, by source, is in `data/sources.json`. Summary:
+
+### First, the reframing that makes this tractable
+
+**Stop thinking about "event sites."** Eventbrite isn't a source; it's a checkout
+page that a hundred different organizations happen to use. Asking "does Eventbrite
+work" produces a worse answer than asking the question that actually determines
+everything:
+
+> **What platform is this organization's website built on?**
+
+Because the platform decides the method, and there are only about four answers:
+
+| Platform | Open? | How you read it |
+|---|---|---|
+| **ShulCloud** | **Yes** | Documented iCal/WebCal export, per shul |
+| **WordPress + The Events Calendar** | **Yes** | Free REST route, on by default |
+| **Wix / Squarespace events** | **Yes** | schema.org JSON-LD in the page |
+| **Chabad.org center sites** | **Yes** | Uniform platform — one adapter, many centers |
+| Eventbrite / Luma / Partiful | Per-organizer | Readable page, but you must know the organizer |
+| Facebook / Meetup | No | Closed |
+
+To identify a site in about thirty seconds: view-source for `shulcloud` or an
+`/ical` link → try `/wp-json/tribe/events/v1/events` → view-source for
+`application/ld+json` → see where the RSVP button points. One of those four
+almost always hits. The playbook is in `data/sources.json` under
+`_platformPlaybook`.
+
+**The best single find is ShulCloud.** It powers a large share of synagogue
+websites and ships a sanctioned iCal export (*Export/WebCal → iCal/WebCal Export →
+SETUP ICAL*). That's a structured, official, per-shul feed with no scraping and no
+ToS question. Every LA shul running it is effectively already solved — you just
+have to collect the URLs. Do that before writing another line of scraper.
+
+### The specific ones you asked about
+
+- **Eventbrite** — organizer pages work, platform-wide search doesn't. You need
+  a hand-built list of organizer IDs. That list *is* the curation work, so it's
+  less of a loss than it sounds.
+- **Luma (lu.ma)** — this is probably the other one you were thinking of. Public
+  calendar and event pages read fine without auth. Careful about the API: Luma
+  *does* publish one (`public-api.luma.com`), but it's scoped to calendars **you
+  own** — it's an organizer tool, not a discovery tool. So it's per-calendar, and
+  you collect slugs by hand.
+- **Partiful** — worth knowing about, not worth crawling. Very popular with
+  exactly the 20s–30s crowd, but events are shared by link rather than listed,
+  so there's no index to crawl. The right way in is the one you already have:
+  when someone drops a Partiful link in the WhatsApp thread, follow it and parse
+  the page.
+
+So: **no, they won't all work — but the ones that don't matter less than they
+look.** Roughly three-quarters of what you want sits on ShulCloud, WordPress,
+Wix/Squarespace, or Chabad.org, all of which are open. The closed platforms are
+mostly checkout pages for organizations you'll have on your list anyway.
 
 ### Open, and genuinely easy
 
@@ -93,11 +151,34 @@ mode is the phone number getting banned — including numbers that had run quiet
 for years. The number in question is presumably yours, and it's presumably in
 that group and forty others. That's a bad thing to gamble.
 
-The legitimate path gets the same data: WhatsApp's own **"Export chat"**. A member
-opens the thread, taps export, and gets a `.txt` plus the media. That's a person
-exercising their own access to a thread they belong to. `harvester/whatsapp.mjs`
-parses both the iOS and Android export formats, joins wrapped multi-line messages,
-pulls out attachments, and filters the chatter before anything reaches a model.
+The legitimate path gets the same data: WhatsApp's own **"Export chat"**. You're
+in the group, so this is just you exercising access you already have.
+`harvester/whatsapp.mjs` handles both iOS and Android formats, day-first and
+month-first dates, 12- and 24-hour times, multi-line messages, attachments,
+edits, deletions, and the invisible characters WhatsApp sprinkles through the
+file. Step-by-step instructions are in [`whatsapp-export.md`](whatsapp-export.md).
+
+**Run `--check` against your real export before trusting any of it:**
+
+```
+node harvester/whatsapp.mjs "_chat.txt" --media . --check
+```
+
+That prints a health report — messages parsed, authors found, date range, date
+format detected, attachments matched, unparsed lines, event candidates — and
+**writes nothing and sends nothing.** It's entirely local, which matters because
+an export contains every member's display name and often their phone number.
+
+Two failure modes it's specifically designed to catch: exporting *without* media
+(every flyer becomes the string `image omitted`, and it will tell you so), and a
+date format the parser guessed wrong.
+
+One bug worth recording, because it's the kind that produces plausible garbage
+rather than an error: the first version treated any line without an `Author:`
+prefix as a continuation of the previous message. WhatsApp system lines —
+"Yael added Moshe", "Ari changed the group description", the encryption notice —
+have no author prefix, so they were being silently welded onto the end of real
+messages. Fixed, and there's now a test for it.
 
 Cost: about one manual step a week. In exchange you keep your phone number.
 
