@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>j-livelist</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>🕯️</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="banner" id="banner" hidden></div>
+
+<header class="top">
+  <div>
+    <h1>j<span>·</span>livelist</h1>
+    <p class="tagline">Jewish Los Angeles, filtered down to the events you'd actually go to.</p>
+  </div>
+  <button class="btn" id="theme-toggle" type="button">Toggle theme</button>
+</header>
+
+<div class="layout">
+  <aside>
+    <fieldset class="fieldset">
+      <legend>Search</legend>
+      <input type="search" id="q" placeholder="dinner, hike, Chabad…" autocomplete="off">
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>Who's going</legend>
+      <label class="row" style="display:block">
+        My age
+        <input type="number" id="age" min="13" max="120" placeholder="any">
+        <span class="help">Shows events whose stated age range includes you. Events with no stated range always show.</span>
+      </label>
+      <label class="row"><input type="checkbox" id="singles"> Singles-oriented only</label>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>Level of observance</legend>
+      <div id="levels"></div>
+      <label class="row"><input type="checkbox" id="unlabeled" checked> Include unlabeled
+        <span class="help">Events we haven't confidently labeled yet.</span></label>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>What matters to you</legend>
+      <div id="facets"></div>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>Kind of event</legend>
+      <div id="types" style="max-height:190px;overflow:auto"></div>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>Where</legend>
+      <div id="regions"></div>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend>When &amp; cost</legend>
+      <select id="window">
+        <option value="9999">Everything upcoming</option>
+        <option value="7">Next 7 days</option>
+        <option value="14">Next 14 days</option>
+        <option value="30">Next 30 days</option>
+      </select>
+      <label class="row" style="margin-top:8px"><input type="checkbox" id="free"> Free events only</label>
+      <label class="row" style="display:block">Max price
+        <input type="number" id="maxcost" min="0" placeholder="any"></label>
+    </fieldset>
+
+    <button class="btn block" id="reset" type="button">Reset filters</button>
+  </aside>
+
+  <main>
+    <div class="results-head">
+      <div class="count" id="count"></div>
+      <button class="btn link" id="explain" type="button">Why these filters?</button>
+    </div>
+    <div id="results"></div>
+    <div id="gate"></div>
+  </main>
+</div>
+
+<footer>
+  <p id="provenance"></p>
+</footer>
+
+<dialog id="explain-dialog">
+  <h2>Why these filters</h2>
+  <p>Every other events listing sorts by <em>date</em> and <em>category</em>. Neither one answers the question
+  people actually have, which is <strong>"will I feel out of place if I walk in?"</strong></p>
+  <p>So the level of observance is a 1–5 scale, and the things that actually decide comfort — kosher food,
+  Shabbat observance, mixed or separate seating, whether there's a real service, whether a beginner will be
+  looked after — are tracked separately, because they cut across the scale. Plenty of Reform events are strictly
+  kosher; plenty of Orthodox events are mixed-gender socially.</p>
+  <p>When we can't tell, the event says so rather than guessing. A wrong religiosity label is worse than a
+  missing one.</p>
+  <form method="dialog"><button class="btn primary">Got it</button></form>
+</dialog>
+
+<dialog id="pay-dialog">
+  <h2>This is a demand test</h2>
+  <p id="pay-body"></p>
+  <form method="dialog"><button class="btn primary">Close</button></form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+{
+  "_comment": "Registry of candidate LA Jewish event sources and how each one can be harvested. IMPORTANT: the `verified` flag is false on everything, because the sandbox this was written in has outbound network access disabled. Run `npm run harvest -- --probe` from a normal machine to test every endpoint and flip these to true/false with real evidence. Do not trust a URL in this file until the probe confirms it.",
+
+  "_methods": {
+    "ics": "Public iCalendar feed. Best case. Structured, stable, explicitly published for syndication, no legal ambiguity.",
+    "tribe": "WordPress 'The Events Calendar' plugin REST API at /wp-json/tribe/events/v1/events. Free, bundled with the plugin, on by default. Extremely common on synagogue and federation sites.",
+    "jsonld": "schema.org/Event JSON-LD embedded in the page's HTML. Published specifically so machines can read it (that is how the event gets into Google's event results). Reading it is ordinary crawling.",
+    "rss": "RSS/Atom feed, usually posts rather than events. Needs date extraction.",
+    "hebcal": "Hebcal public JSON API. Holidays, candle-lighting, parsha. Free, documented, no key.",
+    "manual": "No machine-readable output. Requires a human or an LLM pass over the page, or a partnership with the organizer.",
+    "partner": "Get the organizer to send you their events, or give them a submit form. Slowest to set up, highest quality, zero legal risk, and it is what every real aggregator eventually converges on."
+  },
+
+  "sources": [
+    {
+      "id": "jewishla-federation",
+      "name": "Jewish Federation Los Angeles",
+      "homepage": "https://www.jewishla.org/events/",
+      "method": "tribe",
+      "probe": ["https://www.jewishla.org/wp-json/tribe/events/v1/events?per_page=50", "https://www.jewishla.org/events/list/?ical=1"],
+      "verified": false,
+      "priority": 1,
+      "notes": "Search results show the URL pattern /events/month/?shortcode=... which is The Events Calendar's signature. If the REST route is open this is the single highest-value source in LA: it aggregates many orgs already."
+    },
+    {
+      "id": "jewish-journal-calendar",
+      "name": "Jewish Journal LA Calendar",
+      "homepage": "https://jewishjournal.com/la-calendar/",
+      "method": "jsonld",
+      "probe": ["https://jewishjournal.com/la-calendar/", "https://jewishjournal.com/wp-json/tribe/events/v1/events?per_page=50"],
+      "verified": false,
+      "priority": 1,
+      "notes": "WordPress site. Try the tribe route first, fall back to JSON-LD, fall back to an LLM pass over the listing HTML."
+    },
+    {
+      "id": "hebcal",
+      "name": "Hebcal (holidays + candle lighting)",
+      "homepage": "https://www.hebcal.com/home/195/jewish-calendar-rest-api",
+      "method": "hebcal",
+      "probe": ["https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&nx=on&c=on&geo=zip&zip=90035&M=on&s=on"],
+      "verified": false,
+      "priority": 1,
+      "notes": "Not an events source, but the skeleton the calendar hangs on. Gives real chag dates and LA candle-lighting times so the app never shows a Friday night event starting after candle lighting without flagging it. Free, documented, no auth."
+    },
+    {
+      "id": "moishe-house-la",
+      "name": "Moishe House (LA houses + pods)",
+      "homepage": "https://www.moishehouse.org/",
+      "method": "jsonld",
+      "probe": ["https://www.moishehouse.org/events/"],
+      "verified": false,
+      "priority": 1,
+      "notes": "Multiple LA houses: Sherman Oaks, West LA, WeHo, Conejo. Peer-led, 20s-30s, exactly the target demographic. Now also absorbs the Base network. Strong partner candidate."
+    },
+    {
+      "id": "onetable",
+      "name": "OneTable (Shabbat dinners)",
+      "homepage": "https://onetable.org/",
+      "method": "manual",
+      "probe": ["https://onetable.org/find-a-dinner/"],
+      "verified": false,
+      "priority": 1,
+      "notes": "Shabbat dinners for 21-39. Listings are behind an interactive search and many dinners are semi-private, so this is a partner conversation, not a scrape. High value: it is the densest source of exactly the event type most in demand."
+    },
+    {
+      "id": "ikar",
+      "name": "IKAR",
+      "homepage": "https://ikar.org/",
+      "method": "tribe",
+      "probe": ["https://ikar.org/wp-json/tribe/events/v1/events?per_page=50", "https://ikar.org/events/list/?ical=1"],
+      "verified": false,
+      "priority": 2,
+      "notes": "Observance level 2-3, strong young-adult and social-justice programming."
+    },
+    {
+      "id": "sinai-temple-atid",
+      "name": "Sinai Temple / ATID",
+      "homepage": "https://www.sinaitemple.org/",
+      "method": "manual",
+      "probe": ["https://www.sinaitemple.org/events/"],
+      "verified": false,
+      "priority": 2,
+      "notes": "ATID is the 21-39 arm. Many large shuls run ShulCloud, which exposes an ICS feed per calendar — look for a 'subscribe' or 'export' link before writing any scraper."
+    },
+    {
+      "id": "nashuva",
+      "name": "Nashuva",
+      "homepage": "https://nashuva.com/",
+      "method": "jsonld",
+      "probe": ["https://nashuva.com/events/"],
+      "verified": false,
+      "priority": 3,
+      "notes": "Level 2, musical, unaffiliated-friendly. Beginner-friendly flag should default true."
+    },
+    {
+      "id": "chabad-la",
+      "name": "Chabad centers (LA network)",
+      "homepage": "https://www.chabad.org/centers",
+      "method": "manual",
+      "probe": ["https://www.chabad.org/centers/default_cdo/query/los+angeles"],
+      "verified": false,
+      "priority": 2,
+      "notes": "Dozens of independent LA centers, each with its own site on Chabad.org's platform. The platform is uniform, so one adapter likely unlocks many centers at once. Level 5, but socially far more open than the level implies — a good example of why the level number alone is a bad filter."
+    },
+    {
+      "id": "aishlit",
+      "name": "AishLIT Young Professionals",
+      "homepage": "https://aishlit.com/",
+      "method": "jsonld",
+      "probe": ["https://aishlit.com/events/", "https://aishlit.com/wp-json/tribe/events/v1/events?per_page=50"],
+      "verified": false,
+      "priority": 2,
+      "notes": "Level 4-5, young professionals, outreach-oriented so beginner friendly."
+    },
+    {
+      "id": "tribester",
+      "name": "Tribester",
+      "homepage": "https://www.tribester.com/la/",
+      "method": "jsonld",
+      "probe": ["https://www.tribester.com/la/"],
+      "verified": false,
+      "priority": 2,
+      "notes": "Singles and 20s/30s social. Runs recurring 'Shabbat & Chill' first Saturday monthly."
+    },
+    {
+      "id": "yjp-la",
+      "name": "Young Jewish Professionals LA",
+      "homepage": "https://www.yjplosangeles.com/",
+      "method": "eventbrite-org",
+      "probe": ["https://www.eventbrite.com/o/young-jewish-professionals-of-los-angeles-805159941"],
+      "verified": false,
+      "priority": 2,
+      "notes": "Publishes through an Eventbrite organizer page. Organizer pages carry JSON-LD per event. See the eventbrite note below — organizer pages are reachable, platform-wide search is not."
+    },
+    {
+      "id": "luma-la-jewish",
+      "name": "Luma calendars (per-organizer)",
+      "homepage": "https://lu.ma/",
+      "method": "jsonld",
+      "probe": ["https://lu.ma/discover"],
+      "verified": false,
+      "priority": 3,
+      "notes": "Increasingly where younger/indie organizers post. Public calendar pages render structured data server-side and are readable without auth. You need to know the calendar slug — there is no useful global search, so slugs get collected by hand once per organizer."
+    },
+    {
+      "id": "whatsapp-la-events",
+      "name": "The WhatsApp thread",
+      "homepage": null,
+      "method": "whatsapp-export",
+      "probe": [],
+      "verified": false,
+      "priority": 1,
+      "notes": "Handled by harvester/whatsapp.mjs via WhatsApp's own 'Export chat' feature. See docs/feasibility.md — this is deliberately NOT automated against WhatsApp's protocol."
+    }
+  ],
+
+  "_deadEnds": [
+    {
+      "source": "Eventbrite platform search",
+      "status": "closed",
+      "detail": "GET /v3/events/search/ lost public access on 2019-12-12 and was switched off entirely on 2020-02-20. The remaining public endpoints are by-event-id, by-venue, and by-organization. There is no supported way to ask Eventbrite 'what Jewish events are in LA'. You can still read a known organizer's page. Practically: you must maintain a hand-built list of organizer IDs, which is exactly the curation work the product is selling anyway."
+    },
+    {
+      "source": "Facebook Events",
+      "status": "closed",
+      "detail": "Public event search was removed from the Graph API in the 2018 platform lockdown and never came back. The 'LA Jewish Events Calendar' Facebook page is a real and active source that is functionally unreadable by machine. Treat as manual or partner."
+    },
+    {
+      "source": "Meetup",
+      "status": "restricted",
+      "detail": "GraphQL API behind OAuth and a paid tier. Low Jewish-event density in LA. Not worth it early."
+    },
+    {
+      "source": "WhatsApp group reading via Baileys / whatsapp-web.js",
+      "status": "avoid",
+      "detail": "These reverse-engineer the WhatsApp Web protocol. Using them violates Meta's terms, and the current failure mode is the phone number getting banned — including numbers that ran quietly for years. Do not put the founder's personal number, or any number the community depends on, behind this. The export path gets the same data legitimately."
+    }
+  ]
+}

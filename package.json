@@ -1,0 +1,22 @@
+{
+  "name": "j-livelist",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LA Jewish events, curated and filterable. Proof of concept.",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "harvest": "node harvester/harvest.mjs",
+    "harvest:dry": "node harvester/harvest.mjs --dry-run",
+    "probe": "node harvester/harvest.mjs --probe",
+    "whatsapp": "node harvester/whatsapp.mjs",
+    "build:data": "node harvester/build-data.mjs",
+    "build:single": "node harvester/build-single.mjs",
+    "serve": "node harvester/serve.mjs",
+    "test": "node --test harvester/*.test.mjs"
+  },
+  "comment": "Only the Claude enrichment path (harvester/enrich.mjs) needs a dependency, and it imports the SDK lazily — `npm test`, `npm run harvest`, `npm run build:data`, and `npm run serve` all run with nothing installed.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0"
+  }
+}
