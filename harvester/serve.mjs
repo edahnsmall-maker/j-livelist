@@ -6,11 +6,14 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const ROOT = new URL('../web/', import.meta.url);
+// check.html imports the parser from ../shared/, so that directory is served too.
+const SHARED = new URL('../shared/', import.meta.url);
 const PORT = Number(process.env.PORT) || 5173;
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.svg': 'image/svg+xml',
@@ -20,8 +23,10 @@ createServer(async (req, res) => {
   const rel = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
   // Resolve inside web/ and refuse anything that escapes it.
   const name = path.posix.normalize(rel === '/' ? '/index.html' : rel).replace(/^\/+/, '');
-  const target = new URL(name, ROOT);
-  if (!target.href.startsWith(ROOT.href)) {
+  const shared = name.startsWith('shared/');
+  const base = shared ? SHARED : ROOT;
+  const target = new URL(shared ? name.slice('shared/'.length) : name, base);
+  if (!target.href.startsWith(base.href)) {
     res.writeHead(403).end('forbidden');
     return;
   }

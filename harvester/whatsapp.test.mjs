@@ -67,6 +67,8 @@ test('iOS: attachments, edits, deletions, and omitted media are all flagged', ()
   const withFile = messages.find((m) => m.attachments.length);
   assert.equal(withFile.attachments[0], '00000042-PHOTO-2026-08-19-10-02-11.jpg');
   assert.match(withFile.text, /flyer for the hike/);
+  // The marker itself is plumbing and should not survive into the text.
+  assert.doesNotMatch(withFile.text, /<attached:/);
 
   assert.equal(messages.filter((m) => m.mediaOmitted).length, 1);
   assert.equal(messages.filter((m) => m.edited).length, 1);

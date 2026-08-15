@@ -53,7 +53,12 @@ npm run whatsapp -- "_chat.txt" --media . --check    # health check: fully local
 npm run whatsapp -- "_chat.txt" --media . --llm      # extract events
 ```
 
-**Run `--check` first.** It reports messages parsed, authors, date range, date
+**No terminal? Open `web/check.html`** (or the standalone `web/check.single.html`)
+and drag the `.zip` onto it. Same parser, runs entirely in the browser, nothing
+uploaded — it reports whether the export is readable and shows the event
+candidates with their flyers.
+
+**On the command line, run `--check` first.** It reports messages parsed, authors, date range, date
 format, attachments matched, and unparsed lines, so you know whether the export
 is good before anything else happens. Full instructions:
 [`docs/whatsapp-export.md`](docs/whatsapp-export.md).
@@ -73,7 +78,8 @@ harvester/adapters.mjs    ICS, JSON-LD, WordPress Events Calendar REST, Hebcal
 harvester/classify.mjs    free text → filter fields, with an explicit refusal to guess
 harvester/enrich.mjs      Claude pass: flyer vision + structured extraction
 harvester/whatsapp.mjs    WhatsApp export parser
-web/                      the app — static, no framework
+shared/wa-parse.mjs       WhatsApp parsing — shared by the CLI and the browser checker
+web/                      the app + the export checker — static, no framework
 docs/feasibility.md       the actual answers
 docs/whatsapp-export.md   how to export the thread and verify it parsed
 ```

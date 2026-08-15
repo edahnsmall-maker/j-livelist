@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WhatsApp Export Checker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>🔍</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="check.css">
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <h1>Export <span>·</span> checker</h1>
+    <p class="tagline">Drop your WhatsApp export here to see whether j-livelist can read it.</p>
+  </div>
+  <button class="btn" id="theme-toggle" type="button">Toggle theme</button>
+</header>
+
+<main class="narrow">
+
+  <div class="privacy">
+    <strong>This runs entirely in your browser.</strong> The file is read on your device and never
+    leaves it — no upload, no server, no network request of any kind. Close the tab and it's gone.
+    That matters here: a WhatsApp export contains every group member's name, and often their phone number.
+  </div>
+
+  <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose or drop your WhatsApp export">
+    <div class="drop-icon" aria-hidden="true">↓</div>
+    <p class="drop-main">Drop your export here</p>
+    <p class="drop-sub">the <code>.zip</code> straight from WhatsApp, or the <code>_chat.txt</code> inside it</p>
+    <input type="file" id="file" multiple accept=".zip,.txt,image/*" hidden>
+  </div>
+
+  <div id="results"></div>
+  <div id="candidates"></div>
+
+  <details class="how">
+    <summary>How to get the export off your phone</summary>
+    <div class="how-body">
+      <p><strong>iPhone:</strong> open the group → tap the group name at the top → scroll to the bottom →
+      <strong>Export Chat</strong> → <strong>Attach Media</strong> → save to Files, or AirDrop it to your laptop.</p>
+      <p><strong>Android:</strong> open the group → <strong>⋮</strong> → <strong>More</strong> →
+      <strong>Export chat</strong> → <strong>Include media</strong> → save to Drive or your computer.</p>
+      <p>Choose <strong>with media</strong>. Without it every flyer becomes the words
+      <em>image omitted</em>, and flyers are the most valuable thing in the thread. This page will tell
+      you if that happened.</p>
+      <p>WhatsApp caps media exports at around 40&nbsp;MB. On a busy thread that means you'll get recent
+      media and older messages as text only — fine for a weekly habit, worth knowing if you export a year at once.</p>
+    </div>
+  </details>
+
+</main>
+
+<footer>
+  <p>Part of <strong>j-livelist</strong>. The parser here is the same code the command-line harvester
+  uses, so if it reads cleanly here it will read cleanly there.</p>
+</footer>
+
+<script type="module" src="check.js"></script>
+<script>
+  document.getElementById('theme-toggle').onclick = () => {
+    const root = document.documentElement;
+    const dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.hasAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+  };
+</script>
+</body>
+</html>

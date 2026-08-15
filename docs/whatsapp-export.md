@@ -3,7 +3,25 @@
 You're in the group, which is the whole ballgame — everything below is you
 exercising access you already have. No bot, no extra number, no ban risk.
 
-## Do this once, end to end (about five minutes)
+## The easy way: no install, no terminal
+
+Open the **export checker** page, drag the `.zip` straight from WhatsApp onto it,
+and it tells you immediately whether it parsed — messages found, people posting,
+date range, flyers matched — and shows you the event candidates it pulled out,
+flyer images included.
+
+It runs **entirely in your browser**. The file is read on your device and never
+leaves it: no upload, no server, no network request at all. That matters, because
+an export contains every group member's name and often their phone number.
+
+Locally that page is `web/check.html` (`npm run serve`, then
+<http://localhost:5173/check.html>). It also builds to a single self-contained
+file, `web/check.single.html`, that you can just double-click.
+
+Do that first. Everything below is the command-line path, for when you want to
+actually pull the events into the app.
+
+## The full loop (needs Node)
 
 **1. Export the thread.**
 
