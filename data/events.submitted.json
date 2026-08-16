@@ -1,35 +1,4 @@
 {
-  "generatedAt": "2026-08-16T16:52:14.813Z",
-  "events": [
-    {
-      "title": "Rooftop Havdalah & Dessert",
-      "description": "Short havdalah on the roof, then dessert and a lot of talking.",
-      "venue": null,
-      "start": "2026-09-05T20:30:00-07:00",
-      "host": "Base LA",
-      "neighborhood": "west-hollywood",
-      "types": [],
-      "ageMin": 22,
-      "ageMax": 38,
-      "singlesOriented": false,
-      "observance": 3,
-      "kosher": true,
-      "shomerShabbat": false,
-      "mixedGender": true,
-      "prayer": true,
-      "beginnerFriendly": true,
-      "free": true,
-      "costMin": 0,
-      "costMax": 0,
-      "sourceId": "submission",
-      "confidence": 1,
-      "needsReview": false,
-      "missing": [],
-      "end": null,
-      "url": null,
-      "submitter": "example — delete this file once real ones arrive",
-      "flyers": [],
-      "id": "1baf2079bad0"
-    }
-  ]
+  "generatedAt": "2026-08-16T21:39:25.650Z",
+  "events": []
 }

@@ -1,0 +1,206 @@
+{
+  "_comment": "REAL events, read from flyers posted in the LA Jewish events WhatsApp thread (screenshot of the media gallery, 2026-08-16). Extracted by vision, not invented. Every date was cross-checked against its stated weekday and all ten matched, which is why confidence is high on the timing.",
+  "_caveat": "Read from a grid of thumbnails, so headline / date / time / venue are reliable and fine print is not. Fields that were not legible are null and flagged, never guessed. Full-resolution images would raise the fine-print fields (exact street addresses, RSVP URLs, prices, age limits).",
+  "_source": "whatsapp-flyers",
+  "extractedOn": "2026-08-16",
+  "events": [
+    {
+      "id": "fx01", "title": "Israeli Folk Dancing for Young Adults", "host": "Moishe House West LA",
+      "start": "2026-08-19T19:00:00-07:00", "end": null,
+      "venue": "Valley Beth Shalom, 15739 Ventura Blvd", "neighborhood": "encino",
+      "types": ["arts", "social"],
+      "ageMin": 21, "ageMax": 39, "singlesOriented": false,
+      "observance": 2, "kosher": null, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "All experience levels welcome. Doors open at 7PM.",
+      "url": null, "confidence": 0.85, "needsReview": true, "missing": ["cost", "kosher"]
+    },
+    {
+      "id": "fx02", "title": "Westside Jewish Young Professionals Happy Hour", "host": "Kehillat Ma'arav",
+      "start": "2026-08-13T18:30:00-07:00", "end": null,
+      "venue": "Santa Monica Brew Works, 1920 Colorado Ave Suite C", "neighborhood": "santa-monica",
+      "types": ["social", "professional"],
+      "ageMin": 21, "ageMax": 45, "singlesOriented": false,
+      "observance": 3, "kosher": false, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "For Jewish young professionals, ages 21-45. First drink is on us. Must be over 21. Register at KM-Synagogue.org/events.",
+      "url": null, "confidence": 0.9, "needsReview": false, "missing": []
+    },
+    {
+      "id": "fx03", "title": "Jewish Engineers Meetup", "host": null,
+      "start": "2026-08-27T18:30:00-07:00", "end": null,
+      "venue": "Long Beach Beer Lab", "neighborhood": "long-beach",
+      "types": ["professional", "social"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": 1, "kosher": false, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Pizza and snacks. Craft beer.",
+      "url": null, "confidence": 0.8, "needsReview": true, "missing": ["host", "cost", "age range"]
+    },
+    {
+      "id": "fx04", "title": "Laugh Through the Heartbreak", "host": "Erez Safar & Menachem Silverstein",
+      "start": "2026-08-27T19:30:00-07:00", "end": null,
+      "venue": "Laugh Factory", "neighborhood": "west-hollywood",
+      "types": ["arts", "social"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": 1, "kosher": null, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": false, "costMin": null, "costMax": null,
+      "description": "Stand-up with Jeff Garlin, Natalie Friedman, Sheng Wang, Kirk Fox, Mikey Greenblatt, Malcolm Kelner and others.",
+      "url": null, "confidence": 0.85, "needsReview": true, "missing": ["ticket price"]
+    },
+    {
+      "id": "fx05", "title": "White Party Shabbat", "host": null,
+      "start": "2026-08-14T18:30:00-07:00", "end": null,
+      "venue": null, "neighborhood": null,
+      "types": ["shabbat-dinner", "social", "holiday"],
+      "ageMin": null, "ageMax": null, "singlesOriented": true,
+      "observance": null, "kosher": null, "shomerShabbat": null, "mixedGender": true, "prayer": null, "beginnerFriendly": null,
+      "free": false, "costMin": null, "costMax": null,
+      "description": "Tu B'Av, the holiday of romance. White cocktail attire. Dress in your finest white for an evening cocktail hour, delicious dinner and an unforgettable summer Shabbat.",
+      "url": null, "confidence": 0.7, "needsReview": true, "missing": ["host", "venue", "observance", "cost"]
+    },
+    {
+      "id": "fx06", "title": "Women's Challah Bake", "host": null,
+      "start": "2026-09-03T19:30:00-07:00", "end": null,
+      "venue": "The Shay Hotel", "neighborhood": "culver-city",
+      "types": ["food", "social"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": null, "kosher": true, "shomerShabbat": false, "mixedGender": false, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "An evening of friendship and inspiration. Women only.",
+      "url": null, "confidence": 0.75, "needsReview": true, "missing": ["host", "observance", "cost"]
+    },
+    {
+      "id": "fx07", "title": "Singles Shabbat Dinner Under the Stars", "host": "Nessah Educational & Cultural Center",
+      "start": "2026-08-28T19:30:00-07:00", "end": null,
+      "venue": "Nessah Educational & Cultural Center", "neighborhood": "beverly-hills",
+      "types": ["shabbat-dinner", "singles"],
+      "ageMin": null, "ageMax": null, "singlesOriented": true,
+      "observance": 4, "kosher": true, "shomerShabbat": null, "mixedGender": true, "prayer": null, "beginnerFriendly": null,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Singles Shabbat dinner outdoors.",
+      "url": null, "confidence": 0.85, "needsReview": true, "missing": ["age range", "cost", "shomerShabbat"]
+    },
+    {
+      "id": "fx08", "title": "Rosh Hashanah Dinner — Second Night", "host": null,
+      "start": "2026-09-12T19:00:00-07:00", "end": null,
+      "venue": null, "neighborhood": "long-beach",
+      "types": ["holiday", "food"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": null, "kosher": null, "shomerShabbat": null, "mixedGender": true, "prayer": null, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "A gourmet Rosh Hashana dinner, second night. RSVP for address at RHLBYLB.com.",
+      "url": null, "confidence": 0.8, "needsReview": true, "missing": ["host", "observance", "cost"]
+    },
+    {
+      "id": "fx09", "title": "High Holidays Overlooking the Pacific", "host": "Chabad of Malibu",
+      "start": "2026-09-11T18:00:00-07:00", "end": "2026-09-13T21:00:00-07:00",
+      "venue": null, "neighborhood": "malibu",
+      "types": ["holiday", "shabbat-services"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": 5, "kosher": true, "shomerShabbat": true, "mixedGender": false, "prayer": true, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Welcoming High Holiday services overlooking the Pacific. Rosh Hashanah Sept 11-13; Yom Kippur Sept 20-21. Limited reservations at JewishMalibu.com/HighHolidays.",
+      "url": null, "confidence": 0.85, "needsReview": true, "missing": ["cost"]
+    },
+    {
+      "id": "fx10", "title": "Trivia Night", "host": "IPF Atid LA",
+      "start": "2026-08-18T19:00:00-07:00", "end": null,
+      "venue": null, "neighborhood": null,
+      "types": ["social", "israel"],
+      "ageMin": 22, "ageMax": 40, "singlesOriented": false,
+      "observance": 1, "kosher": null, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Trivia night for young professionals.",
+      "url": null, "confidence": 0.75, "needsReview": true, "missing": ["venue", "cost"]
+    },
+    {
+      "id": "fx11", "title": "Paint, Sip, Relax", "host": "Chabad Young Professionals Long Beach",
+      "start": "2026-09-09T19:00:00-07:00", "end": null,
+      "venue": null, "neighborhood": "long-beach",
+      "types": ["arts", "social"],
+      "ageMin": 21, "ageMax": 40, "singlesOriented": false,
+      "observance": 5, "kosher": true, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "A relaxing evening of art and friendship. Create your own canvas guided by a professional artist, with wine, desserts and learning about the upcoming High Holidays. RSVP for location at paint.cylb.com.",
+      "url": null, "confidence": 0.85, "needsReview": true, "missing": ["cost", "venue"]
+    },
+    {
+      "id": "fx12", "title": "High Holiday Class & Breakfast", "host": "Shul by the Shore",
+      "start": "2026-08-23T09:00:00-07:00", "end": null,
+      "venue": "3545 E 4th St", "neighborhood": "long-beach",
+      "types": ["learning", "holiday", "food"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": 5, "kosher": true, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Breakfast and a class with Rabbi A. Perelmuter on prepping for Rosh Hashanah and Yom Kippur.",
+      "url": null, "confidence": 0.8, "needsReview": true, "missing": ["cost"]
+    },
+    {
+      "id": "fx13", "title": "Uri Banai — Live in Los Angeles", "host": null,
+      "start": "2026-08-22T21:15:00-07:00", "end": null,
+      "venue": "Hamakom, 7353 Valley Circle Blvd", "neighborhood": "west-hills",
+      "types": ["arts", "israel"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": null, "kosher": null, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": null,
+      "free": false, "costMin": 65, "costMax": 75,
+      "description": "Hebrew-language performance. Open seating $65, reserved $75.",
+      "url": null, "confidence": 0.85, "needsReview": true, "missing": ["observance"]
+    },
+    {
+      "id": "fx14", "title": "Cabaret Cheshbon HaNefesh", "host": null,
+      "start": "2026-08-16T19:00:00-07:00", "end": null,
+      "venue": "Der Nister", "neighborhood": "frogtown",
+      "types": ["arts", "spiritual"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": null, "kosher": null, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": null,
+      "free": false, "costMin": null, "costMax": null,
+      "description": "Soul-searching cabaret. Doors open 7 PM.",
+      "url": null, "confidence": 0.75, "needsReview": true, "missing": ["host", "observance", "cost"]
+    },
+    {
+      "id": "fx15", "title": "Elevate — Take Your Tefillah to New Heights", "host": "Beth Jacob",
+      "start": "2026-09-11T18:55:00-07:00", "end": null,
+      "venue": "Beth Jacob Congregation", "neighborhood": "beverly-hills",
+      "types": ["holiday", "shabbat-services", "arts"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": 4, "kosher": true, "shomerShabbat": true, "mixedGender": false, "prayer": true, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "High Holiday services with Rabbi Posy, Rabbi Robbie, Cantor Rabbi Arik and The Maccabeats. Rosh Hashana Friday Sept 11 6:55pm; Shabbat Sept 12 9:00am. Details at BethJacob.org/Elevate.",
+      "url": null, "confidence": 0.8, "needsReview": true, "missing": ["cost"]
+    },
+    {
+      "id": "fx16", "title": "How to Make Millions with Beracha", "host": "Rabbi Yaron Reuven",
+      "start": null, "end": null,
+      "venue": null, "neighborhood": null,
+      "types": ["learning"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": 5, "kosher": null, "shomerShabbat": null, "mixedGender": false, "prayer": false, "beginnerFriendly": null,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Timeless wisdom, practical strategies, divine blessings. Men and women, separate entrance.",
+      "url": null, "confidence": 0.5, "needsReview": true, "missing": ["date", "time", "venue", "cost"]
+    },
+    {
+      "id": "fx17", "title": "NuComers Brunch: Last Bite", "host": "NuRoots",
+      "start": "2026-09-20T11:00:00-07:00", "end": null,
+      "venue": null, "neighborhood": "venice",
+      "types": ["food", "social"],
+      "ageMin": 18, "ageMax": 27, "singlesOriented": false,
+      "observance": null, "kosher": null, "shomerShabbat": false, "mixedGender": true, "prayer": false, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Just for Gen Z in Venice Beach. A last delicious experience of the holidays before Yom Kippur, with a small moment of intention about what you want to leave behind. Venue to be announced.",
+      "url": null, "confidence": 0.7, "needsReview": true, "missing": ["venue", "host confirmation", "cost"]
+    },
+    {
+      "id": "fx18", "title": "High Holidays 5787", "host": "The Happy Minyan",
+      "start": "2026-09-11T18:30:00-07:00", "end": null,
+      "venue": null, "neighborhood": null,
+      "types": ["holiday", "shabbat-services", "arts"],
+      "ageMin": null, "ageMax": null, "singlesOriented": false,
+      "observance": 4, "kosher": true, "shomerShabbat": true, "mixedGender": false, "prayer": true, "beginnerFriendly": true,
+      "free": null, "costMin": null, "costMax": null,
+      "description": "Carlebach-style High Holiday services led by Yehuda Solomon.",
+      "url": null, "confidence": 0.65, "needsReview": true, "missing": ["exact times", "venue", "cost"]
+    }
+  ]
+}

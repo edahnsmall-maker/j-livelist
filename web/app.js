@@ -24,7 +24,15 @@
     $('banner').hidden = false;
     $('banner').innerHTML =
       '<strong>Sample data.</strong> These events are illustrative, hand-written to exercise the filters — ' +
-      'not harvested listings. Run <code>npm run harvest</code> to replace them with real ones.';
+      'not real listings. Run <code>npm run harvest</code> to replace them with real ones.';
+  } else if (data.counts.needsReview) {
+    // Real data, but a lot of it was read off flyers rather than confirmed.
+    // Saying so is the point: the app should never look more certain than it is.
+    $('banner').hidden = false;
+    $('banner').innerHTML =
+      `<strong>Real events, read from flyers.</strong> ${data.counts.needsReview} of ${data.counts.total} ` +
+      'have at least one field we could not read confidently — those are marked ' +
+      '<em>Needs review</em> on the card.';
   }
   $('provenance').textContent =
     `${events.length} events · ${data.counts.needsReview} flagged for review · built ${new Date(
@@ -99,11 +107,14 @@
     }
     if (f.singles && !ev.singlesOriented) return false;
 
+    // With no level chosen, everything shows. Once a level IS chosen, an
+    // unlabeled event must not quietly satisfy it — real data is a third
+    // unlabeled, and letting those through returned a comedy night to someone
+    // who asked for Orthodox. Unlabeled is opt-in, and the count is surfaced.
     if (f.levels.length) {
-      if (ev.observance == null) {
-        if (!f.unlabeled) return false;
-      } else if (!f.levels.includes(ev.observance)) return false;
-    } else if (!f.unlabeled && ev.observance == null) return false;
+      if (ev.observance == null) return f.unlabeled;
+      if (!f.levels.includes(ev.observance)) return false;
+    }
 
     for (const [key, want] of Object.entries(f.facets)) {
       if (want === 'any') continue;
@@ -211,6 +222,28 @@
       return;
     }
 
+    // How many we're holding back for lack of a label, so the gap is visible
+    // rather than silent.
+    if (f.levels.length && !f.unlabeled) {
+      const withoutLevel = events.filter(
+        (ev) => ev.observance == null && matches(ev, { ...f, levels: [], unlabeled: true }),
+      ).length;
+      if (withoutLevel) {
+        const note = el('p', { className: 'unlabeled-note' }, [
+          `${withoutLevel} more match everything else but have no observance label yet. `,
+        ]);
+        note.append(
+          el('button', {
+            className: 'btn link',
+            type: 'button',
+            textContent: 'Show them too',
+            onclick: () => { $('unlabeled').checked = true; render(); },
+          }),
+        );
+        results.append(note);
+      }
+    }
+
     const visible = unlocked() ? hits : hits.slice(0, FREE_EVENTS);
     let currentDay = null;
     let group;
@@ -261,7 +294,7 @@
     node.addEventListener('input', render);
   }
   $('reset').onclick = () => {
-    document.querySelectorAll('aside input[type="checkbox"]').forEach((c) => (c.checked = c.id === 'unlabeled'));
+    document.querySelectorAll('aside input[type="checkbox"]').forEach((c) => (c.checked = false));
     document.querySelectorAll('aside input[type="number"], aside input[type="search"]').forEach((i) => (i.value = ''));
     document.querySelectorAll('aside select').forEach((s) => (s.selectedIndex = 0));
     render();

@@ -1,79 +1,380 @@
 {
   "_comment": "The filter vocabulary. This is the actual product opinion of j-livelist: the categories people sort themselves by, not the categories institutions describe themselves with.",
-
   "observanceLevels": [
-    { "id": 1, "key": "secular",   "label": "Secular / cultural", "blurb": "Jewish by community and culture. No religious content. Nobody will hand you a prayer book." },
-    { "id": 2, "key": "reform",    "label": "Reform / progressive", "blurb": "Egalitarian, mostly English, light ritual. Instruments and mic on Shabbat." },
-    { "id": 3, "key": "traditional-egal", "label": "Conservative / traditional-egalitarian", "blurb": "Substantial Hebrew, traditional liturgy, men and women count equally." },
-    { "id": 4, "key": "modern-orthodox", "label": "Modern Orthodox", "blurb": "Halachic, mechitza at davening, fully engaged with secular life and work." },
-    { "id": 5, "key": "orthodox",  "label": "Orthodox / Yeshivish / Chabad-style", "blurb": "Strictly observant. Separate seating, no phones or money on Shabbat and chag." }
+    {
+      "id": 1,
+      "key": "secular",
+      "label": "Secular / cultural",
+      "blurb": "Jewish by community and culture. No religious content. Nobody will hand you a prayer book."
+    },
+    {
+      "id": 2,
+      "key": "reform",
+      "label": "Reform / progressive",
+      "blurb": "Egalitarian, mostly English, light ritual. Instruments and mic on Shabbat."
+    },
+    {
+      "id": 3,
+      "key": "traditional-egal",
+      "label": "Conservative / traditional-egalitarian",
+      "blurb": "Substantial Hebrew, traditional liturgy, men and women count equally."
+    },
+    {
+      "id": 4,
+      "key": "modern-orthodox",
+      "label": "Modern Orthodox",
+      "blurb": "Halachic, mechitza at davening, fully engaged with secular life and work."
+    },
+    {
+      "id": 5,
+      "key": "orthodox",
+      "label": "Orthodox / Yeshivish / Chabad-style",
+      "blurb": "Strictly observant. Separate seating, no phones or money on Shabbat and chag."
+    }
   ],
-
   "_facetNote": "Observance level alone is a bad filter. It predicts vibe but not comfort. These booleans are what actually decide whether someone walks in and relaxes or walks in and freezes. They are stored independently of level, because they cross-cut it: plenty of level-2 events are strictly kosher, and plenty of level-4 events are mixed-gender socially.",
   "facets": [
-    { "key": "kosher",        "label": "Kosher food",        "help": "Food served is under kosher supervision." },
-    { "key": "shomerShabbat", "label": "Shomer Shabbat",     "help": "Run to Shabbat observance: no phones, photos, money, or driving expected on site." },
-    { "key": "mixedGender",   "label": "Mixed seating",      "help": "Men and women sit and participate together. False means a mechitza or separate seating." },
-    { "key": "prayer",        "label": "Includes prayer",    "help": "There is an actual service, not just food and people." },
-    { "key": "beginnerFriendly", "label": "Beginner friendly", "help": "Explains what is happening. You will not be the only one who does not know the tune." }
+    {
+      "key": "kosher",
+      "label": "Kosher food",
+      "help": "Food served is under kosher supervision."
+    },
+    {
+      "key": "shomerShabbat",
+      "label": "Shomer Shabbat",
+      "help": "Run to Shabbat observance: no phones, photos, money, or driving expected on site."
+    },
+    {
+      "key": "mixedGender",
+      "label": "Mixed seating",
+      "help": "Men and women sit and participate together. False means a mechitza or separate seating."
+    },
+    {
+      "key": "prayer",
+      "label": "Includes prayer",
+      "help": "There is an actual service, not just food and people."
+    },
+    {
+      "key": "beginnerFriendly",
+      "label": "Beginner friendly",
+      "help": "Explains what is happening. You will not be the only one who does not know the tune."
+    }
   ],
-
   "types": [
-    { "key": "shabbat-dinner",  "label": "Shabbat dinner" },
-    { "key": "shabbat-services","label": "Shabbat services" },
-    { "key": "holiday",         "label": "Holiday / chag" },
-    { "key": "learning",        "label": "Learning / class" },
-    { "key": "text-study",      "label": "Text study" },
-    { "key": "social",          "label": "Social / party" },
-    { "key": "singles",         "label": "Singles / dating" },
-    { "key": "professional",    "label": "Professional / networking" },
-    { "key": "volunteer",       "label": "Volunteer / tzedakah" },
-    { "key": "outdoors",        "label": "Outdoors / hike" },
-    { "key": "arts",            "label": "Arts / music" },
-    { "key": "food",            "label": "Food / cooking" },
-    { "key": "sports",          "label": "Sports / fitness" },
-    { "key": "family",          "label": "Family / kids" },
-    { "key": "israel",          "label": "Israel / advocacy" },
-    { "key": "spiritual",       "label": "Meditation / spiritual" }
+    {
+      "key": "shabbat-dinner",
+      "label": "Shabbat dinner"
+    },
+    {
+      "key": "shabbat-services",
+      "label": "Shabbat services"
+    },
+    {
+      "key": "holiday",
+      "label": "Holiday / chag"
+    },
+    {
+      "key": "learning",
+      "label": "Learning / class"
+    },
+    {
+      "key": "text-study",
+      "label": "Text study"
+    },
+    {
+      "key": "social",
+      "label": "Social / party"
+    },
+    {
+      "key": "singles",
+      "label": "Singles / dating"
+    },
+    {
+      "key": "professional",
+      "label": "Professional / networking"
+    },
+    {
+      "key": "volunteer",
+      "label": "Volunteer / tzedakah"
+    },
+    {
+      "key": "outdoors",
+      "label": "Outdoors / hike"
+    },
+    {
+      "key": "arts",
+      "label": "Arts / music"
+    },
+    {
+      "key": "food",
+      "label": "Food / cooking"
+    },
+    {
+      "key": "sports",
+      "label": "Sports / fitness"
+    },
+    {
+      "key": "family",
+      "label": "Family / kids"
+    },
+    {
+      "key": "israel",
+      "label": "Israel / advocacy"
+    },
+    {
+      "key": "spiritual",
+      "label": "Meditation / spiritual"
+    }
   ],
-
   "_geoNote": "Coarse centroids, good enough to rank by distance and to group the map. LA is the whole product problem: a Thursday night in Encino is not an option if you live in Venice, no matter how good the event is.",
   "neighborhoods": [
-    { "key": "pico-robertson", "label": "Pico-Robertson", "lat": 34.0553, "lon": -118.3855, "region": "Westside" },
-    { "key": "beverlywood",    "label": "Beverlywood",    "lat": 34.0433, "lon": -118.3966, "region": "Westside" },
-    { "key": "hancock-park",   "label": "Hancock Park / La Brea", "lat": 34.0722, "lon": -118.3376, "region": "Central" },
-    { "key": "beverly-hills",  "label": "Beverly Hills",  "lat": 34.0736, "lon": -118.4004, "region": "Westside" },
-    { "key": "west-hollywood", "label": "West Hollywood", "lat": 34.0900, "lon": -118.3617, "region": "Central" },
-    { "key": "century-city",   "label": "Century City",   "lat": 34.0577, "lon": -118.4162, "region": "Westside" },
-    { "key": "westwood",       "label": "Westwood",       "lat": 34.0633, "lon": -118.4453, "region": "Westside" },
-    { "key": "brentwood",      "label": "Brentwood",      "lat": 34.0520, "lon": -118.4760, "region": "Westside" },
-    { "key": "santa-monica",   "label": "Santa Monica",   "lat": 34.0195, "lon": -118.4912, "region": "Beach" },
-    { "key": "venice",         "label": "Venice",         "lat": 33.9850, "lon": -118.4695, "region": "Beach" },
-    { "key": "marina-del-rey", "label": "Marina del Rey", "lat": 33.9802, "lon": -118.4517, "region": "Beach" },
-    { "key": "culver-city",    "label": "Culver City",    "lat": 34.0211, "lon": -118.3965, "region": "Westside" },
-    { "key": "mar-vista",      "label": "Mar Vista",      "lat": 34.0046, "lon": -118.4310, "region": "Westside" },
-    { "key": "silver-lake",    "label": "Silver Lake",    "lat": 34.0869, "lon": -118.2702, "region": "Eastside" },
-    { "key": "los-feliz",      "label": "Los Feliz",      "lat": 34.1063, "lon": -118.2856, "region": "Eastside" },
-    { "key": "echo-park",      "label": "Echo Park",      "lat": 34.0782, "lon": -118.2606, "region": "Eastside" },
-    { "key": "dtla",           "label": "Downtown LA",    "lat": 34.0407, "lon": -118.2468, "region": "Central" },
-    { "key": "sherman-oaks",   "label": "Sherman Oaks",   "lat": 34.1510, "lon": -118.4492, "region": "Valley" },
-    { "key": "studio-city",    "label": "Studio City",    "lat": 34.1395, "lon": -118.3870, "region": "Valley" },
-    { "key": "valley-village", "label": "Valley Village", "lat": 34.1670, "lon": -118.3964, "region": "Valley" },
-    { "key": "encino",         "label": "Encino",         "lat": 34.1592, "lon": -118.5012, "region": "Valley" },
-    { "key": "tarzana",        "label": "Tarzana",        "lat": 34.1728, "lon": -118.5534, "region": "Valley" },
-    { "key": "woodland-hills", "label": "Woodland Hills", "lat": 34.1683, "lon": -118.6059, "region": "Valley" },
-    { "key": "calabasas",      "label": "Calabasas",      "lat": 34.1367, "lon": -118.6614, "region": "Valley" },
-    { "key": "pasadena",       "label": "Pasadena",       "lat": 34.1478, "lon": -118.1445, "region": "Eastside" },
-    { "key": "long-beach",     "label": "Long Beach",     "lat": 33.7701, "lon": -118.1937, "region": "South" },
-    { "key": "online",         "label": "Online",         "lat": null,    "lon": null,      "region": "Online" }
+    {
+      "key": "pico-robertson",
+      "label": "Pico-Robertson",
+      "lat": 34.0553,
+      "lon": -118.3855,
+      "region": "Westside"
+    },
+    {
+      "key": "beverlywood",
+      "label": "Beverlywood",
+      "lat": 34.0433,
+      "lon": -118.3966,
+      "region": "Westside"
+    },
+    {
+      "key": "hancock-park",
+      "label": "Hancock Park / La Brea",
+      "lat": 34.0722,
+      "lon": -118.3376,
+      "region": "Central"
+    },
+    {
+      "key": "beverly-hills",
+      "label": "Beverly Hills",
+      "lat": 34.0736,
+      "lon": -118.4004,
+      "region": "Westside"
+    },
+    {
+      "key": "west-hollywood",
+      "label": "West Hollywood",
+      "lat": 34.09,
+      "lon": -118.3617,
+      "region": "Central"
+    },
+    {
+      "key": "century-city",
+      "label": "Century City",
+      "lat": 34.0577,
+      "lon": -118.4162,
+      "region": "Westside"
+    },
+    {
+      "key": "westwood",
+      "label": "Westwood",
+      "lat": 34.0633,
+      "lon": -118.4453,
+      "region": "Westside"
+    },
+    {
+      "key": "brentwood",
+      "label": "Brentwood",
+      "lat": 34.052,
+      "lon": -118.476,
+      "region": "Westside"
+    },
+    {
+      "key": "santa-monica",
+      "label": "Santa Monica",
+      "lat": 34.0195,
+      "lon": -118.4912,
+      "region": "Beach"
+    },
+    {
+      "key": "venice",
+      "label": "Venice",
+      "lat": 33.985,
+      "lon": -118.4695,
+      "region": "Beach"
+    },
+    {
+      "key": "marina-del-rey",
+      "label": "Marina del Rey",
+      "lat": 33.9802,
+      "lon": -118.4517,
+      "region": "Beach"
+    },
+    {
+      "key": "culver-city",
+      "label": "Culver City",
+      "lat": 34.0211,
+      "lon": -118.3965,
+      "region": "Westside"
+    },
+    {
+      "key": "mar-vista",
+      "label": "Mar Vista",
+      "lat": 34.0046,
+      "lon": -118.431,
+      "region": "Westside"
+    },
+    {
+      "key": "silver-lake",
+      "label": "Silver Lake",
+      "lat": 34.0869,
+      "lon": -118.2702,
+      "region": "Eastside"
+    },
+    {
+      "key": "los-feliz",
+      "label": "Los Feliz",
+      "lat": 34.1063,
+      "lon": -118.2856,
+      "region": "Eastside"
+    },
+    {
+      "key": "echo-park",
+      "label": "Echo Park",
+      "lat": 34.0782,
+      "lon": -118.2606,
+      "region": "Eastside"
+    },
+    {
+      "key": "dtla",
+      "label": "Downtown LA",
+      "lat": 34.0407,
+      "lon": -118.2468,
+      "region": "Central"
+    },
+    {
+      "key": "sherman-oaks",
+      "label": "Sherman Oaks",
+      "lat": 34.151,
+      "lon": -118.4492,
+      "region": "Valley"
+    },
+    {
+      "key": "studio-city",
+      "label": "Studio City",
+      "lat": 34.1395,
+      "lon": -118.387,
+      "region": "Valley"
+    },
+    {
+      "key": "valley-village",
+      "label": "Valley Village",
+      "lat": 34.167,
+      "lon": -118.3964,
+      "region": "Valley"
+    },
+    {
+      "key": "encino",
+      "label": "Encino",
+      "lat": 34.1592,
+      "lon": -118.5012,
+      "region": "Valley"
+    },
+    {
+      "key": "tarzana",
+      "label": "Tarzana",
+      "lat": 34.1728,
+      "lon": -118.5534,
+      "region": "Valley"
+    },
+    {
+      "key": "woodland-hills",
+      "label": "Woodland Hills",
+      "lat": 34.1683,
+      "lon": -118.6059,
+      "region": "Valley"
+    },
+    {
+      "key": "calabasas",
+      "label": "Calabasas",
+      "lat": 34.1367,
+      "lon": -118.6614,
+      "region": "Valley"
+    },
+    {
+      "key": "pasadena",
+      "label": "Pasadena",
+      "lat": 34.1478,
+      "lon": -118.1445,
+      "region": "Eastside"
+    },
+    {
+      "key": "long-beach",
+      "label": "Long Beach",
+      "lat": 33.7701,
+      "lon": -118.1937,
+      "region": "South"
+    },
+    {
+      "key": "online",
+      "label": "Online",
+      "lat": null,
+      "lon": null,
+      "region": "Online"
+    },
+    {
+      "key": "malibu",
+      "label": "Malibu",
+      "lat": 34.0259,
+      "lon": -118.7798,
+      "region": "Beach"
+    },
+    {
+      "key": "west-hills",
+      "label": "West Hills",
+      "lat": 34.2003,
+      "lon": -118.6454,
+      "region": "Valley"
+    },
+    {
+      "key": "frogtown",
+      "label": "Frogtown / Elysian Valley",
+      "lat": 34.0958,
+      "lon": -118.2417,
+      "region": "Eastside"
+    }
   ],
-
   "ageBands": [
-    { "key": "college",  "label": "College / 18-22", "min": 18, "max": 22 },
-    { "key": "20s",      "label": "20s",             "min": 22, "max": 29 },
-    { "key": "30s",      "label": "30s",             "min": 30, "max": 39 },
-    { "key": "40s-50s",  "label": "40s-50s",         "min": 40, "max": 59 },
-    { "key": "60plus",   "label": "60+",             "min": 60, "max": 120 },
-    { "key": "all-ages", "label": "All ages",        "min": 0,  "max": 120 }
+    {
+      "key": "college",
+      "label": "College / 18-22",
+      "min": 18,
+      "max": 22
+    },
+    {
+      "key": "20s",
+      "label": "20s",
+      "min": 22,
+      "max": 29
+    },
+    {
+      "key": "30s",
+      "label": "30s",
+      "min": 30,
+      "max": 39
+    },
+    {
+      "key": "40s-50s",
+      "label": "40s-50s",
+      "min": 40,
+      "max": 59
+    },
+    {
+      "key": "60plus",
+      "label": "60+",
+      "min": 60,
+      "max": 120
+    },
+    {
+      "key": "all-ages",
+      "label": "All ages",
+      "min": 0,
+      "max": 120
+    }
   ]
 }

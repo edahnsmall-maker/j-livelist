@@ -19,6 +19,7 @@ const taxonomy = await readJson('../data/taxonomy.json');
 const harvested = await readJson('../data/events.harvested.json');
 const whatsapp = await readJson('../data/whatsapp.json');
 const submitted = await readJson('../data/events.submitted.json');
+const extracted = await readJson('../data/events.extracted.json');
 const seed = await readJson('../data/events.seed.json');
 
 const NEIGHBORHOOD = new Map(taxonomy.neighborhoods.map((n) => [n.key, n]));
@@ -62,24 +63,28 @@ function normalize(ev, { isSample }) {
 }
 
 const events = [];
-let isSample = false;
 
-if (harvested?.events?.length) {
-  events.push(...harvested.events.map((e) => normalize(e, { isSample: false })));
-} else if (seed?.events?.length) {
-  isSample = true;
-  events.push(...seed.events.map((e) => normalize(e, { isSample: true })));
+/* Real sources first. The sample set is a stand-in for an empty database, so
+   the moment any real event exists the invented ones must go — a list that
+   silently mixes eighteen real events with thirty-two fabricated ones is worse
+   than either alone, and the banner would no longer be true. */
+
+for (const ev of harvested?.events || []) {
+  events.push(normalize(ev, { isSample: false }));
 }
 
-// Submitted events join the pool. They carry the submitter's own answers to the
-// facet questions, which is better data than anything we can infer.
+// Real events read off flyers by vision.
+for (const ev of extracted?.events || []) {
+  events.push(normalize({ ...ev, sourceId: 'whatsapp-flyers' }, { isSample: false }));
+}
+
+// Submitted events carry the submitter's own answers to the facet questions,
+// which is better data than anything we can infer.
 for (const ev of submitted?.events || []) {
   events.push(normalize(ev, { isSample: false }));
-  isSample = false;
 }
 
-// WhatsApp records that made it through extraction join the same pool, flagged
-// low-confidence so the UI can show where they came from.
+// WhatsApp records that made it through extraction.
 for (const rec of whatsapp?.records || []) {
   const x = rec.extracted;
   if (!x || x.isEvent === false || !x.startLocal) continue;
@@ -97,6 +102,11 @@ for (const rec of whatsapp?.records || []) {
       { isSample: false },
     ),
   );
+}
+
+const isSample = events.length === 0;
+if (isSample) {
+  for (const ev of seed?.events || []) events.push(normalize(ev, { isSample: true }));
 }
 
 events.sort((a, b) => String(a.start).localeCompare(String(b.start)));

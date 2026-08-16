@@ -280,3 +280,13 @@ h1, h3, .gate h2, dialog h2 { text-wrap: balance; }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+.unlabeled-note {
+  background: var(--surface-2);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  margin: 0 0 16px;
+}
