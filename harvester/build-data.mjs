@@ -18,6 +18,7 @@ async function readJson(relPath) {
 const taxonomy = await readJson('../data/taxonomy.json');
 const harvested = await readJson('../data/events.harvested.json');
 const whatsapp = await readJson('../data/whatsapp.json');
+const submitted = await readJson('../data/events.submitted.json');
 const seed = await readJson('../data/events.seed.json');
 
 const NEIGHBORHOOD = new Map(taxonomy.neighborhoods.map((n) => [n.key, n]));
@@ -68,6 +69,13 @@ if (harvested?.events?.length) {
 } else if (seed?.events?.length) {
   isSample = true;
   events.push(...seed.events.map((e) => normalize(e, { isSample: true })));
+}
+
+// Submitted events join the pool. They carry the submitter's own answers to the
+// facet questions, which is better data than anything we can infer.
+for (const ev of submitted?.events || []) {
+  events.push(normalize(ev, { isSample: false }));
+  isSample = false;
 }
 
 // WhatsApp records that made it through extraction join the same pool, flagged

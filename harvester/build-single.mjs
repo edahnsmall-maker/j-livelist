@@ -23,16 +23,20 @@ function bodyOf(html) {
   return body;
 }
 
-const [indexHtml, checkHtml, styles, checkCss, appJs, checkJs, waParse, data] = await Promise.all([
-  read('../web/index.html'),
-  read('../web/check.html'),
-  read('../web/styles.css'),
-  read('../web/check.css'),
-  read('../web/app.js'),
-  read('../web/check.js'),
-  read('../shared/wa-parse.mjs'),
-  read('../web/data.json'),
-]);
+const [indexHtml, checkHtml, submitHtml, styles, checkCss, submitCss, appJs, checkJs, submitJs, waParse, data] =
+  await Promise.all([
+    read('../web/index.html'),
+    read('../web/check.html'),
+    read('../web/submit.html'),
+    read('../web/styles.css'),
+    read('../web/check.css'),
+    read('../web/submit.css'),
+    read('../web/app.js'),
+    read('../web/check.js'),
+    read('../web/submit.js'),
+    read('../shared/wa-parse.mjs'),
+    read('../web/data.json'),
+  ]);
 
 const favicon = (emoji) =>
   `<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>${emoji}</text></svg>">`;
@@ -88,7 +92,32 @@ ${deModule(checkJs)}
 `,
 );
 
-for (const f of ['index.single.html', 'check.single.html']) {
+/* ---------- the submission form ---------- */
+
+const submitBody = bodyOf(submitHtml)
+  .replace(/<script[^>]*src=["']submit\.js["'][^>]*><\/script>/i, '')
+  .trim();
+
+await writeFile(
+  new URL('../web/submit.single.html', import.meta.url),
+  `<title>Submit an Event</title>
+${favicon('📮')}
+<style>
+${styles}
+${checkCss}
+${submitCss}
+</style>
+
+${submitBody}
+
+<script>window.__DATA__ = ${safeData};</script>
+<script>
+${deModule(submitJs)}
+</script>
+`,
+);
+
+for (const f of ['index.single.html', 'check.single.html', 'submit.single.html']) {
   const size = (await read(`../web/${f}`)).length / 1024;
   console.log(`wrote web/${f} (${size.toFixed(0)} KB, self-contained)`);
 }

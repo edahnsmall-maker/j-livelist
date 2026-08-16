@@ -1,0 +1,16 @@
+{
+  "_schema": "j-livelist/submission@1",
+  "submittedAt": "2026-08-16T18:00:00.000Z",
+  "submitter": "example — delete this file once real ones arrive",
+  "title": "Rooftop Havdalah & Dessert",
+  "host": "Base LA",
+  "startLocal": "2026-09-05T20:30",
+  "neighborhood": "west-hollywood",
+  "url": null,
+  "description": "Short havdalah on the roof, then dessert and a lot of talking.",
+  "ageMin": 22, "ageMax": 38,
+  "free": true, "costMin": 0, "costMax": 0,
+  "observance": 3,
+  "kosher": true, "shomerShabbat": false, "mixedGender": true, "prayer": true, "beginnerFriendly": true,
+  "flyers": [], "needsReview": true
+}

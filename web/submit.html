@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Submit an Event</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>📮</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="check.css">
+<link rel="stylesheet" href="submit.css">
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <h1>Submit <span>·</span> an event</h1>
+    <p class="tagline">Drop a flyer, answer four quick questions, done.</p>
+  </div>
+  <button class="btn" id="theme-toggle" type="button">Toggle theme</button>
+</header>
+
+<main class="narrow">
+
+  <p class="lede">
+    Have an event the LA Jewish list should know about? The fastest way in is a flyer plus the
+    handful of things a flyer never says. <strong>Takes about thirty seconds.</strong>
+  </p>
+
+  <section class="step">
+    <h2><span class="num">1</span> The flyer, or the details</h2>
+    <p class="hint">A flyer covers most of it — title, date, time, place. If you don't have one, paste or type the details instead.</p>
+
+    <div class="drop compact" id="drop" tabindex="0" role="button" aria-label="Add a flyer image">
+      <p class="drop-main">Add a flyer</p>
+      <p class="drop-sub">drag an image here, or click to choose</p>
+      <input type="file" id="file" accept="image/*" multiple hidden>
+    </div>
+    <div id="preview" class="preview"></div>
+
+    <textarea id="blurb" rows="4" placeholder="Or paste/type the details: what it is, when, where, how much."></textarea>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">2</span> What a flyer never tells us</h2>
+    <p class="hint">
+      This is the part that matters, and only you know it. Everything here is optional —
+      <strong>“Not sure” is a real answer</strong> and better than a guess. Blank fields get flagged for review
+      rather than filled in with something plausible.
+    </p>
+
+    <div class="facets" id="facets"></div>
+
+    <label class="field">
+      <span>Level of observance</span>
+      <select id="observance">
+        <option value="">Not sure — leave it for review</option>
+      </select>
+      <span class="help" id="obs-help">Describes the general feel. The switches above matter more.</span>
+    </label>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">3</span> Who and where</h2>
+    <div class="grid2">
+      <label class="field"><span>Event name</span><input type="text" id="title" placeholder="Shabbat dinner for 20s &amp; 30s"></label>
+      <label class="field"><span>Host / organization</span><input type="text" id="host" placeholder="Moishe House Sherman Oaks"></label>
+      <label class="field"><span>Date</span><input type="date" id="date"></label>
+      <label class="field"><span>Start time</span><input type="time" id="time"></label>
+      <label class="field"><span>Neighborhood</span><select id="neighborhood"><option value="">Not sure</option></select></label>
+      <label class="field"><span>Ages</span><select id="ages"><option value="">Everyone / not specified</option></select></label>
+      <label class="field"><span>Cost</span><input type="text" id="cost" placeholder="Free, or $18"></label>
+      <label class="field"><span>Link to RSVP</span><input type="url" id="url" placeholder="https://"></label>
+    </div>
+    <label class="field"><span>Your name or contact <em>(optional — so we can ask if something's unclear)</em></span>
+      <input type="text" id="submitter" placeholder="Optional"></label>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">4</span> Send it</h2>
+    <div id="out"></div>
+    <div class="actions">
+      <button class="btn primary" id="build" type="button">Build my submission</button>
+      <button class="btn" id="copy" type="button" hidden>Copy to clipboard</button>
+    </div>
+  </section>
+
+  <details class="how">
+    <summary>What happens to this, and why it's shaped this way</summary>
+    <div class="how-body">
+      <p>A model can read a flyer and pull out the title, date, time, place, and price quite reliably.
+      What it <em>cannot</em> reliably infer is whether the food is kosher, whether there's a mechitza,
+      whether phones are put away, or whether a newcomer will be looked after. Those aren't printed on
+      most flyers — but the person running the event knows them instantly.</p>
+      <p>So the labor is split: the flyer carries what's easy to extract, and you supply the four things
+      that are hard to infer and most decide whether someone feels at home walking in. That's why the
+      form is short, and why "Not sure" is offered everywhere — a wrong label is worse than a missing one.</p>
+      <p>This proof of concept has no server, so it builds a submission you copy and send. In a deployed
+      version this posts straight to the list and the flyer is read automatically.</p>
+    </div>
+  </details>
+
+</main>
+
+<footer>
+  <p>Part of <strong>j-livelist</strong>.</p>
+</footer>
+
+<script type="module" src="submit.js"></script>
+<script>
+  document.getElementById('theme-toggle').onclick = () => {
+    const root = document.documentElement;
+    const dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.hasAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+  };
+</script>
+</body>
+</html>

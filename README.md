@@ -68,6 +68,23 @@ is good before anything else happens. Full instructions:
 costs roughly half a cent to four cents each depending on model and resolution —
 see the table in the memo.
 
+## Submissions
+
+The highest-leverage path in the whole project: let organizers tell you.
+
+- `web/submit.html` — a 30-second form. Drop a flyer, answer the questions a
+  flyer never answers, done. Builds a JSON payload you copy and send.
+- `npm run ingest` — folds `data/submissions/*.json` into the dataset.
+- `npm run build:data` — publishes them to the app.
+
+The form asks a human **only for what a model can't reliably infer**. A flyer
+gives up title, date, time, and place readily; it almost never says whether the
+food is kosher or whether there's a mechitza — but the organizer knows instantly.
+So the flyer does the easy work and the person does the four hard fields.
+
+"Not sure" is a real answer everywhere and is the default. It leaves the field
+null and flags the event for review, rather than asserting something false.
+
 ## Layout
 
 ```
@@ -79,7 +96,7 @@ harvester/classify.mjs    free text → filter fields, with an explicit refusal 
 harvester/enrich.mjs      Claude pass: flyer vision + structured extraction
 harvester/whatsapp.mjs    WhatsApp export parser
 shared/wa-parse.mjs       WhatsApp parsing — shared by the CLI and the browser checker
-web/                      the app + the export checker — static, no framework
+web/                      the app, the export checker, the submit form — static, no framework
 docs/feasibility.md       the actual answers
 docs/whatsapp-export.md   how to export the thread and verify it parsed
 ```

@@ -1,0 +1,2542 @@
+<title>Submit an Event</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>📮</text></svg>">
+<style>
+:root {
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --surface-2: #eaeef5;
+  --border: #dde3ed;
+  --border-strong: #bcc6d6;
+  --text: #141821;
+  --text-dim: #5d6879;
+  --accent: #1b4ba8;
+  --accent-soft: #e3ebfa;
+  --accent-ink: #ffffff;
+  --warn: #8a5300;
+  --warn-soft: #fcf0da;
+  --ok: #0f6b46;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(20, 24, 33, .06), 0 4px 12px rgba(20, 24, 33, .05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101319;
+    --surface: #191d26;
+    --surface-2: #212633;
+    --border: #2c3341;
+    --border-strong: #414a5c;
+    --text: #e8ecf4;
+    --text-dim: #97a1b3;
+    --accent: #86a9f5;
+    --accent-soft: #1c2740;
+  --accent-ink: #10131c;
+    --warn: #e0a760;
+    --warn-soft: #2e2418;
+    --ok: #5fcf95;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 14px rgba(0, 0, 0, .3);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #101319;
+  --surface: #191d26;
+  --surface-2: #212633;
+  --border: #2c3341;
+  --border-strong: #414a5c;
+  --text: #e8ecf4;
+  --text-dim: #97a1b3;
+  --accent: #86a9f5;
+  --accent-soft: #1c2740;
+  --accent-ink: #10131c;
+  --warn: #e0a760;
+  --warn-soft: #2e2418;
+  --ok: #5fcf95;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 14px rgba(0, 0, 0, .3);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.banner {
+  background: var(--warn-soft);
+  color: var(--warn);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px;
+  font-size: 13px;
+  text-align: center;
+}
+.banner strong { font-weight: 650; }
+
+header.top {
+  padding: 26px 20px 18px;
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+h1 {
+  font-size: 25px;
+  margin: 0;
+  letter-spacing: -.02em;
+  font-weight: 680;
+}
+h1 span { color: var(--accent); }
+.tagline { color: var(--text-dim); font-size: 14px; margin: 4px 0 0; }
+
+.layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 64px;
+  display: grid;
+  grid-template-columns: 268px 1fr;
+  gap: 26px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  aside { position: static !important; }
+}
+
+aside {
+  position: sticky;
+  top: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+}
+
+.fieldset { border: 0; padding: 0; margin: 0 0 20px; }
+.fieldset:last-child { margin-bottom: 4px; }
+.fieldset > legend {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-dim);
+  font-weight: 650;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+label.row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 4px 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+label.row input { margin: 3px 0 0; flex: none; accent-color: var(--accent); }
+label.row .help { display: block; color: var(--text-dim); font-size: 12px; line-height: 1.35; }
+
+select, input[type="number"], input[type="search"], input[type="date"] {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.block { width: 100%; }
+.btn.link { background: none; border: 0; color: var(--accent); padding: 0; text-decoration: underline; }
+
+.results-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.count { font-weight: 650; }
+.count em { font-style: normal; color: var(--text-dim); font-weight: 400; }
+
+.daygroup { margin-bottom: 26px; }
+.dayhead {
+  font-size: 12px;
+  font-weight: 680;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-dim);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+}
+.card-top { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; }
+.card h3 { margin: 0; font-size: 16.5px; font-weight: 650; letter-spacing: -.01em; }
+.card h3 a { color: inherit; }
+.when { color: var(--text-dim); font-size: 13px; white-space: nowrap; }
+.meta { color: var(--text-dim); font-size: 13.5px; margin: 3px 0 0; }
+.desc { margin: 8px 0 0; font-size: 14px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.chip {
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.chip.lv { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: 600; }
+.chip.free { color: var(--ok); border-color: currentColor; }
+.chip.review { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+
+.empty {
+  text-align: center;
+  padding: 44px 20px;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+/* Paywall — the demand test, not a real payment flow. */
+.gate {
+  margin-top: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 22px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.gate h2 { margin: 0 0 6px; font-size: 18px; }
+.gate p { margin: 0 auto 14px; color: var(--text-dim); max-width: 46ch; font-size: 14px; }
+.gate .note { font-size: 12px; margin-top: 12px; }
+
+dialog {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  max-width: 460px;
+  padding: 22px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.25);
+}
+dialog::backdrop { background: rgba(0,0,0,.45); }
+dialog h2 { margin-top: 0; font-size: 18px; }
+dialog p { font-size: 14px; }
+
+footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 50px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+a { color: var(--accent); }
+
+/* Details that matter in a list you scan rather than read. */
+h1, h3, .gate h2, dialog h2 { text-wrap: balance; }
+
+/* Start times sit in a right-hand column across every card; tabular figures
+   keep that column from wobbling row to row. */
+.when { font-variant-numeric: tabular-nums; }
+
+:where(a, button, input, select, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* Checker-specific layout. Palette tokens come from styles.css. */
+
+.narrow {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 20px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.privacy {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.drop {
+  border: 2px dashed var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 44px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.drop:hover, .drop.over { border-color: var(--accent); background: var(--surface-2); }
+.drop.over { border-style: solid; }
+.drop.done { padding: 24px; }
+.drop-icon {
+  font-size: 26px;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.drop-main { margin: 0; font-size: 17px; font-weight: 650; }
+.drop-sub { margin: 6px 0 0; color: var(--text-dim); font-size: 13.5px; }
+.drop code {
+  background: var(--surface-2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+
+.verdict {
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  border-left: 4px solid;
+  margin-bottom: 18px;
+}
+.verdict.ok   { background: var(--surface); border-color: var(--ok); }
+.verdict.warn { background: var(--warn-soft); border-color: var(--warn); color: var(--warn); }
+.verdict.fail { background: var(--surface); border-color: #b4342a; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.stat {
+  background: var(--surface);
+  padding: 11px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 14px;
+}
+.stat-label { color: var(--text-dim); }
+.stat-value { font-weight: 650; font-variant-numeric: tabular-nums; text-align: right; }
+.stat.bad { background: var(--warn-soft); }
+.stat.bad .stat-label, .stat.bad .stat-value { color: var(--warn); }
+
+.panel {
+  margin-top: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.panel h3 { margin: 0 0 2px; font-size: 15px; }
+.hint { color: var(--text-dim); font-size: 13.5px; line-height: 1.5; margin: 4px 0 0; }
+
+ul.authors { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+ul.authors li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 5px;
+}
+ul.authors li:last-child { border-bottom: 0; }
+ul.authors b { font-variant-numeric: tabular-nums; color: var(--text-dim); }
+
+#candidates h2 { font-size: 18px; margin: 26px 0 2px; }
+
+.cand {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+  margin-top: 10px;
+  box-shadow: var(--shadow);
+}
+.cand-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.cand-author { font-weight: 650; color: var(--text); }
+.cand-date { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cand-text { margin: 0; font-size: 14.5px; white-space: pre-wrap; }
+.cand-img {
+  display: block;
+  margin-top: 10px;
+  max-width: 100%;
+  max-height: 340px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.how {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+.how summary { cursor: pointer; font-weight: 650; font-size: 14.5px; }
+.how-body { padding-top: 8px; font-size: 14px; line-height: 1.6; }
+.how-body p { margin: 8px 0; }
+
+footer .narrow { padding-bottom: 0; }
+
+.paste {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+.paste summary { cursor: pointer; font-weight: 650; font-size: 14.5px; }
+.paste-body { padding-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+.paste-body textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.paste-body .btn { align-self: flex-start; }
+
+.flyers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.flyer { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.flyer img { display: block; width: 100%; height: 170px; object-fit: cover; }
+.flyer figcaption {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  padding: 7px 9px;
+  word-break: break-all;
+}
+
+/* Submission form. Palette from styles.css, shared bits from check.css. */
+
+.lede { font-size: 15.5px; line-height: 1.6; margin: 0; }
+
+.step {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+}
+.step h2 {
+  margin: 0 0 4px;
+  font-size: 16.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* Numbered because this genuinely is a sequence — flyer, then the judgment
+   calls, then the details. Not decoration. */
+.num {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 13px;
+  display: grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.step > .hint { margin-bottom: 12px; }
+
+.drop.compact { padding: 22px 18px; margin-top: 4px; }
+
+.preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.preview:empty { display: none; }
+.preview .flyer { width: 150px; }
+.preview .flyer img { height: 120px; }
+.preview .flyer figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  align-items: center;
+}
+.preview .flyer figcaption span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.preview .flyer .btn.link { font-size: 11.5px; flex: none; }
+
+.step textarea, .payload {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.payload { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+
+.facets { display: flex; flex-direction: column; gap: 12px; }
+.facet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.facet:last-child { border-bottom: 0; padding-bottom: 0; }
+.facet-q { flex: 1 1 260px; }
+.facet-q strong { font-size: 14.5px; font-weight: 650; display: block; }
+.facet-q .help { font-size: 12.5px; color: var(--text-dim); line-height: 1.4; }
+
+.choices { display: flex; gap: 0; flex: none; border: 1px solid var(--border-strong); border-radius: 8px; overflow: hidden; }
+.choice {
+  font: inherit;
+  font-size: 13.5px;
+  padding: 7px 13px;
+  border: 0;
+  border-right: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.choice:last-child { border-right: 0; }
+.choice:hover { background: var(--surface-2); }
+.choice.on { background: var(--accent); color: var(--accent-ink); font-weight: 650; }
+
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; margin-top: 12px; }
+.grid2 .field { margin-top: 0; }
+.field > span { color: var(--text-dim); font-weight: 600; }
+.field > span em { font-weight: 400; font-style: normal; }
+.field input, .field select {
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+.field .help { color: var(--text-dim); font-size: 12.5px; font-weight: 400; }
+
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+</style>
+
+<header class="top">
+  <div>
+    <h1>Submit <span>·</span> an event</h1>
+    <p class="tagline">Drop a flyer, answer four quick questions, done.</p>
+  </div>
+  <button class="btn" id="theme-toggle" type="button">Toggle theme</button>
+</header>
+
+<main class="narrow">
+
+  <p class="lede">
+    Have an event the LA Jewish list should know about? The fastest way in is a flyer plus the
+    handful of things a flyer never says. <strong>Takes about thirty seconds.</strong>
+  </p>
+
+  <section class="step">
+    <h2><span class="num">1</span> The flyer, or the details</h2>
+    <p class="hint">A flyer covers most of it — title, date, time, place. If you don't have one, paste or type the details instead.</p>
+
+    <div class="drop compact" id="drop" tabindex="0" role="button" aria-label="Add a flyer image">
+      <p class="drop-main">Add a flyer</p>
+      <p class="drop-sub">drag an image here, or click to choose</p>
+      <input type="file" id="file" accept="image/*" multiple hidden>
+    </div>
+    <div id="preview" class="preview"></div>
+
+    <textarea id="blurb" rows="4" placeholder="Or paste/type the details: what it is, when, where, how much."></textarea>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">2</span> What a flyer never tells us</h2>
+    <p class="hint">
+      This is the part that matters, and only you know it. Everything here is optional —
+      <strong>“Not sure” is a real answer</strong> and better than a guess. Blank fields get flagged for review
+      rather than filled in with something plausible.
+    </p>
+
+    <div class="facets" id="facets"></div>
+
+    <label class="field">
+      <span>Level of observance</span>
+      <select id="observance">
+        <option value="">Not sure — leave it for review</option>
+      </select>
+      <span class="help" id="obs-help">Describes the general feel. The switches above matter more.</span>
+    </label>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">3</span> Who and where</h2>
+    <div class="grid2">
+      <label class="field"><span>Event name</span><input type="text" id="title" placeholder="Shabbat dinner for 20s &amp; 30s"></label>
+      <label class="field"><span>Host / organization</span><input type="text" id="host" placeholder="Moishe House Sherman Oaks"></label>
+      <label class="field"><span>Date</span><input type="date" id="date"></label>
+      <label class="field"><span>Start time</span><input type="time" id="time"></label>
+      <label class="field"><span>Neighborhood</span><select id="neighborhood"><option value="">Not sure</option></select></label>
+      <label class="field"><span>Ages</span><select id="ages"><option value="">Everyone / not specified</option></select></label>
+      <label class="field"><span>Cost</span><input type="text" id="cost" placeholder="Free, or $18"></label>
+      <label class="field"><span>Link to RSVP</span><input type="url" id="url" placeholder="https://"></label>
+    </div>
+    <label class="field"><span>Your name or contact <em>(optional — so we can ask if something's unclear)</em></span>
+      <input type="text" id="submitter" placeholder="Optional"></label>
+  </section>
+
+  <section class="step">
+    <h2><span class="num">4</span> Send it</h2>
+    <div id="out"></div>
+    <div class="actions">
+      <button class="btn primary" id="build" type="button">Build my submission</button>
+      <button class="btn" id="copy" type="button" hidden>Copy to clipboard</button>
+    </div>
+  </section>
+
+  <details class="how">
+    <summary>What happens to this, and why it's shaped this way</summary>
+    <div class="how-body">
+      <p>A model can read a flyer and pull out the title, date, time, place, and price quite reliably.
+      What it <em>cannot</em> reliably infer is whether the food is kosher, whether there's a mechitza,
+      whether phones are put away, or whether a newcomer will be looked after. Those aren't printed on
+      most flyers — but the person running the event knows them instantly.</p>
+      <p>So the labor is split: the flyer carries what's easy to extract, and you supply the four things
+      that are hard to infer and most decide whether someone feels at home walking in. That's why the
+      form is short, and why "Not sure" is offered everywhere — a wrong label is worse than a missing one.</p>
+      <p>This proof of concept has no server, so it builds a submission you copy and send. In a deployed
+      version this posts straight to the list and the flyer is read automatically.</p>
+    </div>
+  </details>
+
+</main>
+
+<footer>
+  <p>Part of <strong>j-livelist</strong>.</p>
+</footer>
+
+
+<script>
+  document.getElementById('theme-toggle').onclick = () => {
+    const root = document.documentElement;
+    const dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.hasAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+  };
+</script>
+
+<script>window.__DATA__ = {
+  "generatedAt": "2026-08-16T16:52:14.983Z",
+  "isSample": false,
+  "counts": {
+    "total": 33,
+    "needsReview": 6,
+    "free": 20
+  },
+  "taxonomy": {
+    "_comment": "The filter vocabulary. This is the actual product opinion of j-livelist: the categories people sort themselves by, not the categories institutions describe themselves with.",
+    "observanceLevels": [
+      {
+        "id": 1,
+        "key": "secular",
+        "label": "Secular / cultural",
+        "blurb": "Jewish by community and culture. No religious content. Nobody will hand you a prayer book."
+      },
+      {
+        "id": 2,
+        "key": "reform",
+        "label": "Reform / progressive",
+        "blurb": "Egalitarian, mostly English, light ritual. Instruments and mic on Shabbat."
+      },
+      {
+        "id": 3,
+        "key": "traditional-egal",
+        "label": "Conservative / traditional-egalitarian",
+        "blurb": "Substantial Hebrew, traditional liturgy, men and women count equally."
+      },
+      {
+        "id": 4,
+        "key": "modern-orthodox",
+        "label": "Modern Orthodox",
+        "blurb": "Halachic, mechitza at davening, fully engaged with secular life and work."
+      },
+      {
+        "id": 5,
+        "key": "orthodox",
+        "label": "Orthodox / Yeshivish / Chabad-style",
+        "blurb": "Strictly observant. Separate seating, no phones or money on Shabbat and chag."
+      }
+    ],
+    "_facetNote": "Observance level alone is a bad filter. It predicts vibe but not comfort. These booleans are what actually decide whether someone walks in and relaxes or walks in and freezes. They are stored independently of level, because they cross-cut it: plenty of level-2 events are strictly kosher, and plenty of level-4 events are mixed-gender socially.",
+    "facets": [
+      {
+        "key": "kosher",
+        "label": "Kosher food",
+        "help": "Food served is under kosher supervision."
+      },
+      {
+        "key": "shomerShabbat",
+        "label": "Shomer Shabbat",
+        "help": "Run to Shabbat observance: no phones, photos, money, or driving expected on site."
+      },
+      {
+        "key": "mixedGender",
+        "label": "Mixed seating",
+        "help": "Men and women sit and participate together. False means a mechitza or separate seating."
+      },
+      {
+        "key": "prayer",
+        "label": "Includes prayer",
+        "help": "There is an actual service, not just food and people."
+      },
+      {
+        "key": "beginnerFriendly",
+        "label": "Beginner friendly",
+        "help": "Explains what is happening. You will not be the only one who does not know the tune."
+      }
+    ],
+    "types": [
+      {
+        "key": "shabbat-dinner",
+        "label": "Shabbat dinner"
+      },
+      {
+        "key": "shabbat-services",
+        "label": "Shabbat services"
+      },
+      {
+        "key": "holiday",
+        "label": "Holiday / chag"
+      },
+      {
+        "key": "learning",
+        "label": "Learning / class"
+      },
+      {
+        "key": "text-study",
+        "label": "Text study"
+      },
+      {
+        "key": "social",
+        "label": "Social / party"
+      },
+      {
+        "key": "singles",
+        "label": "Singles / dating"
+      },
+      {
+        "key": "professional",
+        "label": "Professional / networking"
+      },
+      {
+        "key": "volunteer",
+        "label": "Volunteer / tzedakah"
+      },
+      {
+        "key": "outdoors",
+        "label": "Outdoors / hike"
+      },
+      {
+        "key": "arts",
+        "label": "Arts / music"
+      },
+      {
+        "key": "food",
+        "label": "Food / cooking"
+      },
+      {
+        "key": "sports",
+        "label": "Sports / fitness"
+      },
+      {
+        "key": "family",
+        "label": "Family / kids"
+      },
+      {
+        "key": "israel",
+        "label": "Israel / advocacy"
+      },
+      {
+        "key": "spiritual",
+        "label": "Meditation / spiritual"
+      }
+    ],
+    "_geoNote": "Coarse centroids, good enough to rank by distance and to group the map. LA is the whole product problem: a Thursday night in Encino is not an option if you live in Venice, no matter how good the event is.",
+    "neighborhoods": [
+      {
+        "key": "pico-robertson",
+        "label": "Pico-Robertson",
+        "lat": 34.0553,
+        "lon": -118.3855,
+        "region": "Westside"
+      },
+      {
+        "key": "beverlywood",
+        "label": "Beverlywood",
+        "lat": 34.0433,
+        "lon": -118.3966,
+        "region": "Westside"
+      },
+      {
+        "key": "hancock-park",
+        "label": "Hancock Park / La Brea",
+        "lat": 34.0722,
+        "lon": -118.3376,
+        "region": "Central"
+      },
+      {
+        "key": "beverly-hills",
+        "label": "Beverly Hills",
+        "lat": 34.0736,
+        "lon": -118.4004,
+        "region": "Westside"
+      },
+      {
+        "key": "west-hollywood",
+        "label": "West Hollywood",
+        "lat": 34.09,
+        "lon": -118.3617,
+        "region": "Central"
+      },
+      {
+        "key": "century-city",
+        "label": "Century City",
+        "lat": 34.0577,
+        "lon": -118.4162,
+        "region": "Westside"
+      },
+      {
+        "key": "westwood",
+        "label": "Westwood",
+        "lat": 34.0633,
+        "lon": -118.4453,
+        "region": "Westside"
+      },
+      {
+        "key": "brentwood",
+        "label": "Brentwood",
+        "lat": 34.052,
+        "lon": -118.476,
+        "region": "Westside"
+      },
+      {
+        "key": "santa-monica",
+        "label": "Santa Monica",
+        "lat": 34.0195,
+        "lon": -118.4912,
+        "region": "Beach"
+      },
+      {
+        "key": "venice",
+        "label": "Venice",
+        "lat": 33.985,
+        "lon": -118.4695,
+        "region": "Beach"
+      },
+      {
+        "key": "marina-del-rey",
+        "label": "Marina del Rey",
+        "lat": 33.9802,
+        "lon": -118.4517,
+        "region": "Beach"
+      },
+      {
+        "key": "culver-city",
+        "label": "Culver City",
+        "lat": 34.0211,
+        "lon": -118.3965,
+        "region": "Westside"
+      },
+      {
+        "key": "mar-vista",
+        "label": "Mar Vista",
+        "lat": 34.0046,
+        "lon": -118.431,
+        "region": "Westside"
+      },
+      {
+        "key": "silver-lake",
+        "label": "Silver Lake",
+        "lat": 34.0869,
+        "lon": -118.2702,
+        "region": "Eastside"
+      },
+      {
+        "key": "los-feliz",
+        "label": "Los Feliz",
+        "lat": 34.1063,
+        "lon": -118.2856,
+        "region": "Eastside"
+      },
+      {
+        "key": "echo-park",
+        "label": "Echo Park",
+        "lat": 34.0782,
+        "lon": -118.2606,
+        "region": "Eastside"
+      },
+      {
+        "key": "dtla",
+        "label": "Downtown LA",
+        "lat": 34.0407,
+        "lon": -118.2468,
+        "region": "Central"
+      },
+      {
+        "key": "sherman-oaks",
+        "label": "Sherman Oaks",
+        "lat": 34.151,
+        "lon": -118.4492,
+        "region": "Valley"
+      },
+      {
+        "key": "studio-city",
+        "label": "Studio City",
+        "lat": 34.1395,
+        "lon": -118.387,
+        "region": "Valley"
+      },
+      {
+        "key": "valley-village",
+        "label": "Valley Village",
+        "lat": 34.167,
+        "lon": -118.3964,
+        "region": "Valley"
+      },
+      {
+        "key": "encino",
+        "label": "Encino",
+        "lat": 34.1592,
+        "lon": -118.5012,
+        "region": "Valley"
+      },
+      {
+        "key": "tarzana",
+        "label": "Tarzana",
+        "lat": 34.1728,
+        "lon": -118.5534,
+        "region": "Valley"
+      },
+      {
+        "key": "woodland-hills",
+        "label": "Woodland Hills",
+        "lat": 34.1683,
+        "lon": -118.6059,
+        "region": "Valley"
+      },
+      {
+        "key": "calabasas",
+        "label": "Calabasas",
+        "lat": 34.1367,
+        "lon": -118.6614,
+        "region": "Valley"
+      },
+      {
+        "key": "pasadena",
+        "label": "Pasadena",
+        "lat": 34.1478,
+        "lon": -118.1445,
+        "region": "Eastside"
+      },
+      {
+        "key": "long-beach",
+        "label": "Long Beach",
+        "lat": 33.7701,
+        "lon": -118.1937,
+        "region": "South"
+      },
+      {
+        "key": "online",
+        "label": "Online",
+        "lat": null,
+        "lon": null,
+        "region": "Online"
+      }
+    ],
+    "ageBands": [
+      {
+        "key": "college",
+        "label": "College / 18-22",
+        "min": 18,
+        "max": 22
+      },
+      {
+        "key": "20s",
+        "label": "20s",
+        "min": 22,
+        "max": 29
+      },
+      {
+        "key": "30s",
+        "label": "30s",
+        "min": 30,
+        "max": 39
+      },
+      {
+        "key": "40s-50s",
+        "label": "40s-50s",
+        "min": 40,
+        "max": 59
+      },
+      {
+        "key": "60plus",
+        "label": "60+",
+        "min": 60,
+        "max": 120
+      },
+      {
+        "key": "all-ages",
+        "label": "All ages",
+        "min": 0,
+        "max": 120
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": "s002",
+      "title": "Friday Night Live",
+      "host": "Sinai Temple ATID",
+      "start": "2026-08-21T18:30:00-07:00",
+      "end": "2026-08-21T22:00:00-07:00",
+      "venue": "Sinai Temple",
+      "neighborhood": "westwood",
+      "neighborhoodLabel": "Westwood",
+      "region": "Westside",
+      "lat": 34.0633,
+      "lon": -118.4453,
+      "types": [
+        "shabbat-services",
+        "shabbat-dinner",
+        "social"
+      ],
+      "ageMin": 21,
+      "ageMax": 39,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 0,
+      "costMax": 36,
+      "description": "Band-led service, then dinner. Service free, dinner ticketed. Transliteration in the siddur.",
+      "url": "https://www.sinaitemple.org/",
+      "sourceId": "sinai-temple-atid",
+      "seenIn": [
+        "sinai-temple-atid"
+      ],
+      "confidence": 0.85,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s004",
+      "title": "Carlebach-style Kabbalat Shabbat",
+      "host": "Pico Shul",
+      "start": "2026-08-21T18:45:00-07:00",
+      "end": "2026-08-21T20:00:00-07:00",
+      "venue": "Pico Shul",
+      "neighborhood": "pico-robertson",
+      "neighborhoodLabel": "Pico-Robertson",
+      "region": "Westside",
+      "lat": 34.0553,
+      "lon": -118.3855,
+      "types": [
+        "shabbat-services"
+      ],
+      "ageMin": 20,
+      "ageMax": 45,
+      "singlesOriented": false,
+      "observance": 5,
+      "kosher": true,
+      "shomerShabbat": true,
+      "mixedGender": false,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Singing-heavy, young crowd, mechitza. Walk or park a few blocks off. Dinner invitations tend to materialize.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.7,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s003",
+      "title": "Shabbat Dinner at the House",
+      "host": "Moishe House Sherman Oaks",
+      "start": "2026-08-21T19:00:00-07:00",
+      "end": "2026-08-21T23:30:00-07:00",
+      "venue": "Moishe House",
+      "neighborhood": "sherman-oaks",
+      "neighborhoodLabel": "Sherman Oaks",
+      "region": "Valley",
+      "lat": 34.151,
+      "lon": -118.4492,
+      "types": [
+        "shabbat-dinner",
+        "social"
+      ],
+      "ageMin": 22,
+      "ageMax": 32,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Homemade, loud, twelve people around a table built for eight. RSVP required, they cap it.",
+      "url": "https://www.moishehouse.org/",
+      "sourceId": "moishe-house-la",
+      "seenIn": [
+        "moishe-house-la"
+      ],
+      "confidence": 0.9,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s005",
+      "title": "Nashuva Friday Night",
+      "host": "Nashuva",
+      "start": "2026-08-21T19:00:00-07:00",
+      "end": "2026-08-21T21:00:00-07:00",
+      "venue": "Brentwood Presbyterian",
+      "neighborhood": "brentwood",
+      "neighborhoodLabel": "Brentwood",
+      "region": "Westside",
+      "lat": 34.052,
+      "lon": -118.476,
+      "types": [
+        "shabbat-services",
+        "arts",
+        "spiritual"
+      ],
+      "ageMin": 0,
+      "ageMax": 120,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Full band, world-music arrangements, heavily unaffiliated crowd. No membership, no tickets, no ask.",
+      "url": "https://nashuva.com/",
+      "sourceId": "nashuva",
+      "seenIn": [
+        "nashuva"
+      ],
+      "confidence": 0.8,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s001",
+      "title": "Shabbat & Chill",
+      "host": "Tribester",
+      "start": "2026-08-21T19:30:00-07:00",
+      "end": "2026-08-21T23:00:00-07:00",
+      "venue": "Private loft",
+      "neighborhood": "west-hollywood",
+      "neighborhoodLabel": "West Hollywood",
+      "region": "Central",
+      "lat": 34.09,
+      "lon": -118.3617,
+      "types": [
+        "shabbat-dinner",
+        "social",
+        "singles"
+      ],
+      "ageMin": 24,
+      "ageMax": 38,
+      "singlesOriented": true,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 25,
+      "costMax": 25,
+      "description": "Catered dinner, first drink included, name tags that do not suck. Mostly late 20s to mid 30s.",
+      "url": "https://www.tribester.com/la/",
+      "sourceId": "tribester",
+      "seenIn": [
+        "tribester"
+      ],
+      "confidence": 0.9,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s006",
+      "title": "Saturday Morning Minyan + Kiddush",
+      "host": "Shtibl Minyan",
+      "start": "2026-08-22T09:30:00-07:00",
+      "end": "2026-08-22T13:00:00-07:00",
+      "venue": "Shtibl",
+      "neighborhood": "pico-robertson",
+      "neighborhoodLabel": "Pico-Robertson",
+      "region": "Westside",
+      "lat": 34.0553,
+      "lon": -118.3855,
+      "types": [
+        "shabbat-services",
+        "text-study"
+      ],
+      "ageMin": 0,
+      "ageMax": 120,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": true,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": false,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Traditional-egalitarian, lay-led, everyone gets an aliyah eventually. Long. Excellent kiddush.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.7,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s007",
+      "title": "Havdalah on the Sand",
+      "host": "Moishe House West LA",
+      "start": "2026-08-22T19:45:00-07:00",
+      "end": "2026-08-22T22:00:00-07:00",
+      "venue": "Venice Beach, lifeguard tower 26",
+      "neighborhood": "venice",
+      "neighborhoodLabel": "Venice",
+      "region": "Beach",
+      "lat": 33.985,
+      "lon": -118.4695,
+      "types": [
+        "social",
+        "outdoors",
+        "spiritual"
+      ],
+      "ageMin": 22,
+      "ageMax": 35,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Bonfire, guitar, twenty minutes of actual havdalah and then three hours of sitting around.",
+      "url": "https://www.moishehouse.org/",
+      "sourceId": "moishe-house-la",
+      "seenIn": [
+        "moishe-house-la"
+      ],
+      "confidence": 0.85,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s008",
+      "title": "Sunday Morning Hike — Temescal Canyon",
+      "host": "JConnect LA",
+      "start": "2026-08-23T08:30:00-07:00",
+      "end": "2026-08-23T11:00:00-07:00",
+      "venue": "Temescal Gateway Park",
+      "neighborhood": "santa-monica",
+      "neighborhoodLabel": "Santa Monica",
+      "region": "Beach",
+      "lat": 34.0195,
+      "lon": -118.4912,
+      "types": [
+        "outdoors",
+        "social",
+        "singles"
+      ],
+      "ageMin": 25,
+      "ageMax": 40,
+      "singlesOriented": true,
+      "observance": 1,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Moderate 4 miles. Coffee after for whoever is still talking to each other.",
+      "url": null,
+      "sourceId": "whatsapp-la-events",
+      "seenIn": [
+        "whatsapp-la-events"
+      ],
+      "confidence": 0.55,
+      "needsReview": true,
+      "isSample": true
+    },
+    {
+      "id": "s009",
+      "title": "Talmud & Whiskey",
+      "host": "AishLIT",
+      "start": "2026-08-25T20:00:00-07:00",
+      "end": "2026-08-25T22:00:00-07:00",
+      "venue": "Private home",
+      "neighborhood": "beverlywood",
+      "neighborhoodLabel": "Beverlywood",
+      "region": "Westside",
+      "lat": 34.0433,
+      "lon": -118.3966,
+      "types": [
+        "text-study",
+        "learning",
+        "social"
+      ],
+      "ageMin": 22,
+      "ageMax": 38,
+      "singlesOriented": false,
+      "observance": 4,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": false,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Men's night. One page, slowly, with a decent bottle. No background assumed.",
+      "url": "https://aishlit.com/",
+      "sourceId": "aishlit",
+      "seenIn": [
+        "aishlit"
+      ],
+      "confidence": 0.8,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s010",
+      "title": "Rosh Hashanah Cooking Class",
+      "host": "IKAR",
+      "start": "2026-08-26T18:30:00-07:00",
+      "end": "2026-08-26T21:00:00-07:00",
+      "venue": "IKAR",
+      "neighborhood": "hancock-park",
+      "neighborhoodLabel": "Hancock Park / La Brea",
+      "region": "Central",
+      "lat": 34.0722,
+      "lon": -118.3376,
+      "types": [
+        "food",
+        "learning",
+        "holiday"
+      ],
+      "ageMin": 25,
+      "ageMax": 55,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 40,
+      "costMax": 40,
+      "description": "Honey cake, round challah, and one thing your grandmother did not make. Take home what you cook.",
+      "url": "https://ikar.org/",
+      "sourceId": "ikar",
+      "seenIn": [
+        "ikar"
+      ],
+      "confidence": 0.85,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s011",
+      "title": "Young Professionals Happy Hour",
+      "host": "YJP Los Angeles",
+      "start": "2026-08-27T18:30:00-07:00",
+      "end": "2026-08-27T21:00:00-07:00",
+      "venue": "Rooftop bar",
+      "neighborhood": "century-city",
+      "neighborhoodLabel": "Century City",
+      "region": "Westside",
+      "lat": 34.0577,
+      "lon": -118.4162,
+      "types": [
+        "professional",
+        "social",
+        "singles"
+      ],
+      "ageMin": 25,
+      "ageMax": 40,
+      "singlesOriented": false,
+      "observance": 1,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 20,
+      "costMax": 20,
+      "description": "Finance, law, and entertainment heavy. Actual business cards. Open bar first hour.",
+      "url": "https://www.yjplosangeles.com/",
+      "sourceId": "yjp-la",
+      "seenIn": [
+        "yjp-la"
+      ],
+      "confidence": 0.9,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s012",
+      "title": "Challah Bake for the Chagim",
+      "host": "Chabad of Venice",
+      "start": "2026-08-27T19:00:00-07:00",
+      "end": "2026-08-27T21:30:00-07:00",
+      "venue": "Chabad of Venice",
+      "neighborhood": "venice",
+      "neighborhoodLabel": "Venice",
+      "region": "Beach",
+      "lat": 33.985,
+      "lon": -118.4695,
+      "types": [
+        "food",
+        "social",
+        "family"
+      ],
+      "ageMin": 18,
+      "ageMax": 70,
+      "singlesOriented": false,
+      "observance": 5,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": false,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 18,
+      "costMax": 18,
+      "description": "Women's challah bake. Everyone leaves with dough. Genuinely open to anyone, observant or not.",
+      "url": null,
+      "sourceId": "chabad-la",
+      "seenIn": [
+        "chabad-la"
+      ],
+      "confidence": 0.75,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s015",
+      "title": "Kabbalat Shabbat in the Park",
+      "host": "IKAR",
+      "start": "2026-08-28T18:00:00-07:00",
+      "end": "2026-08-28T20:00:00-07:00",
+      "venue": "La Brea Tar Pits lawn",
+      "neighborhood": "hancock-park",
+      "neighborhoodLabel": "Hancock Park / La Brea",
+      "region": "Central",
+      "lat": 34.0722,
+      "lon": -118.3376,
+      "types": [
+        "shabbat-services",
+        "outdoors",
+        "family"
+      ],
+      "ageMin": 0,
+      "ageMax": 120,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Picnic blankets, kids underfoot, forty-five minutes of singing. Bring your own dinner.",
+      "url": "https://ikar.org/",
+      "sourceId": "ikar",
+      "seenIn": [
+        "ikar"
+      ],
+      "confidence": 0.85,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s014",
+      "title": "OneTable Shabbat — Arts District",
+      "host": "OneTable host",
+      "start": "2026-08-28T19:00:00-07:00",
+      "end": "2026-08-28T22:30:00-07:00",
+      "venue": "Private loft",
+      "neighborhood": "dtla",
+      "neighborhoodLabel": "Downtown LA",
+      "region": "Central",
+      "lat": 34.0407,
+      "lon": -118.2468,
+      "types": [
+        "shabbat-dinner",
+        "social"
+      ],
+      "ageMin": 21,
+      "ageMax": 39,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Subsidized by OneTable, hosted by a peer. Ten seats, RSVP closes Thursday.",
+      "url": "https://onetable.org/",
+      "sourceId": "onetable",
+      "seenIn": [
+        "onetable"
+      ],
+      "confidence": 0.8,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s013",
+      "title": "Shabbat Dinner — Silver Lake Pod",
+      "host": "Moishe House Without Walls",
+      "start": "2026-08-28T19:30:00-07:00",
+      "end": "2026-08-28T23:00:00-07:00",
+      "venue": "Private home",
+      "neighborhood": "silver-lake",
+      "neighborhoodLabel": "Silver Lake",
+      "region": "Eastside",
+      "lat": 34.0869,
+      "lon": -118.2702,
+      "types": [
+        "shabbat-dinner",
+        "social"
+      ],
+      "ageMin": 24,
+      "ageMax": 36,
+      "singlesOriented": false,
+      "observance": 1,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Eastside crowd, vegetarian, blessings optional and usually skipped. Bring a bottle.",
+      "url": null,
+      "sourceId": "whatsapp-la-events",
+      "seenIn": [
+        "whatsapp-la-events"
+      ],
+      "confidence": 0.5,
+      "needsReview": true,
+      "isSample": true
+    },
+    {
+      "id": "s016",
+      "title": "Israeli Film Night",
+      "host": "Jewish Federation LA",
+      "start": "2026-08-30T19:00:00-07:00",
+      "end": "2026-08-30T21:30:00-07:00",
+      "venue": "Federation building",
+      "neighborhood": "beverly-hills",
+      "neighborhoodLabel": "Beverly Hills",
+      "region": "Westside",
+      "lat": 34.0736,
+      "lon": -118.4004,
+      "types": [
+        "arts",
+        "israel",
+        "social"
+      ],
+      "ageMin": 21,
+      "ageMax": 70,
+      "singlesOriented": false,
+      "observance": 1,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 12,
+      "costMax": 12,
+      "description": "Screening plus Q&A with the director over Zoom. Hebrew with subtitles.",
+      "url": "https://www.jewishla.org/events/",
+      "sourceId": "jewishla-federation",
+      "seenIn": [
+        "jewishla-federation"
+      ],
+      "confidence": 0.9,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s017",
+      "title": "Tuesday Night Learning",
+      "host": "Chabad of Sherman Oaks",
+      "start": "2026-09-01T20:00:00-07:00",
+      "end": "2026-09-01T21:15:00-07:00",
+      "venue": "Chabad center",
+      "neighborhood": "sherman-oaks",
+      "neighborhoodLabel": "Sherman Oaks",
+      "region": "Valley",
+      "lat": 34.151,
+      "lon": -118.4492,
+      "types": [
+        "learning",
+        "text-study"
+      ],
+      "ageMin": 18,
+      "ageMax": 80,
+      "singlesOriented": false,
+      "observance": 5,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Weekly parsha class. Walk in cold, nobody will ask you anything.",
+      "url": null,
+      "sourceId": "chabad-la",
+      "seenIn": [
+        "chabad-la"
+      ],
+      "confidence": 0.7,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s018",
+      "title": "Volunteer Night — Meal Packing",
+      "host": "Jewish Federation LA",
+      "start": "2026-09-02T18:00:00-07:00",
+      "end": "2026-09-02T20:30:00-07:00",
+      "venue": "Warehouse",
+      "neighborhood": "culver-city",
+      "neighborhoodLabel": "Culver City",
+      "region": "Westside",
+      "lat": 34.0211,
+      "lon": -118.3965,
+      "types": [
+        "volunteer",
+        "social"
+      ],
+      "ageMin": 21,
+      "ageMax": 45,
+      "singlesOriented": false,
+      "observance": 1,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Two hours packing meals for homebound seniors. Counts as a social event, honestly.",
+      "url": "https://www.jewishla.org/events/",
+      "sourceId": "jewishla-federation",
+      "seenIn": [
+        "jewishla-federation"
+      ],
+      "confidence": 0.9,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s032",
+      "title": "Torah on Tap",
+      "host": "Temple Israel of Hollywood",
+      "start": "2026-09-02T19:30:00-07:00",
+      "end": "2026-09-02T21:00:00-07:00",
+      "venue": "Bar back room",
+      "neighborhood": "los-feliz",
+      "neighborhoodLabel": "Los Feliz",
+      "region": "Eastside",
+      "lat": 34.1063,
+      "lon": -118.2856,
+      "types": [
+        "learning",
+        "social",
+        "text-study"
+      ],
+      "ageMin": 25,
+      "ageMax": 45,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Rabbi, a text, and a tab you pay yourself. Eastside regulars.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.65,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s019",
+      "title": "Beginners' Hebrew — Session 1",
+      "host": "Sinai Temple",
+      "start": "2026-09-03T19:00:00-07:00",
+      "end": "2026-09-03T20:30:00-07:00",
+      "venue": "Sinai Temple",
+      "neighborhood": "westwood",
+      "neighborhoodLabel": "Westwood",
+      "region": "Westside",
+      "lat": 34.0633,
+      "lon": -118.4453,
+      "types": [
+        "learning"
+      ],
+      "ageMin": 18,
+      "ageMax": 80,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 90,
+      "costMax": 90,
+      "description": "Six-week course, alef-bet to reading prayers. Priced for the series.",
+      "url": "https://www.sinaitemple.org/",
+      "sourceId": "sinai-temple-atid",
+      "seenIn": [
+        "sinai-temple-atid"
+      ],
+      "confidence": 0.8,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s020",
+      "title": "Shabbat Dinner — Valley 30s",
+      "host": "Valley Beth Shalom young adults",
+      "start": "2026-09-04T19:00:00-07:00",
+      "end": "2026-09-04T22:00:00-07:00",
+      "venue": "Private home",
+      "neighborhood": "encino",
+      "neighborhoodLabel": "Encino",
+      "region": "Valley",
+      "lat": 34.1592,
+      "lon": -118.5012,
+      "types": [
+        "shabbat-dinner",
+        "social"
+      ],
+      "ageMin": 30,
+      "ageMax": 42,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 18,
+      "costMax": 18,
+      "description": "Valley crowd, slightly older, several couples. Kosher catered.",
+      "url": null,
+      "sourceId": "whatsapp-la-events",
+      "seenIn": [
+        "whatsapp-la-events"
+      ],
+      "confidence": 0.5,
+      "needsReview": true,
+      "isSample": true
+    },
+    {
+      "id": "s021",
+      "title": "Singles Shabbat Lunch",
+      "host": "Young Israel of Century City",
+      "start": "2026-09-05T12:30:00-07:00",
+      "end": "2026-09-05T15:30:00-07:00",
+      "venue": "Shul social hall",
+      "neighborhood": "century-city",
+      "neighborhoodLabel": "Century City",
+      "region": "Westside",
+      "lat": 34.0577,
+      "lon": -118.4162,
+      "types": [
+        "shabbat-services",
+        "singles",
+        "food"
+      ],
+      "ageMin": 24,
+      "ageMax": 36,
+      "singlesOriented": true,
+      "observance": 4,
+      "kosher": true,
+      "shomerShabbat": true,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": false,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Seated lunch after davening. Mixed seating at the meal, mechitza at the service. RSVP by Thursday, no phones on site.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.65,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "1baf2079bad0",
+      "title": "Rooftop Havdalah & Dessert",
+      "host": "Base LA",
+      "start": "2026-09-05T20:30:00-07:00",
+      "end": null,
+      "venue": null,
+      "neighborhood": "west-hollywood",
+      "neighborhoodLabel": "West Hollywood",
+      "region": "Central",
+      "lat": 34.09,
+      "lon": -118.3617,
+      "types": [],
+      "ageMin": 22,
+      "ageMax": 38,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Short havdalah on the roof, then dessert and a lot of talking.",
+      "url": null,
+      "sourceId": "submission",
+      "seenIn": [
+        "submission"
+      ],
+      "confidence": 1,
+      "needsReview": false,
+      "isSample": false
+    },
+    {
+      "id": "s023",
+      "title": "Selichot Concert & Dessert",
+      "host": "Valley Beth Shalom",
+      "start": "2026-09-05T21:00:00-07:00",
+      "end": "2026-09-05T23:59:00-07:00",
+      "venue": "VBS sanctuary",
+      "neighborhood": "encino",
+      "neighborhoodLabel": "Encino",
+      "region": "Valley",
+      "lat": 34.1592,
+      "lon": -118.5012,
+      "types": [
+        "holiday",
+        "arts",
+        "spiritual"
+      ],
+      "ageMin": 0,
+      "ageMax": 120,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Late-night selichot service with choir. The unofficial start of the High Holidays.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.7,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s022",
+      "title": "Sunday Pickup Basketball",
+      "host": "LA Jewish Sports League",
+      "start": "2026-09-06T10:00:00-07:00",
+      "end": "2026-09-06T12:00:00-07:00",
+      "venue": "Rec center gym",
+      "neighborhood": "mar-vista",
+      "neighborhoodLabel": "Mar Vista",
+      "region": "Westside",
+      "lat": 34.0046,
+      "lon": -118.431,
+      "types": [
+        "sports",
+        "social"
+      ],
+      "ageMin": 21,
+      "ageMax": 45,
+      "singlesOriented": false,
+      "observance": 1,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 10,
+      "costMax": 10,
+      "description": "Drop-in run. Ten bucks for the court.",
+      "url": null,
+      "sourceId": "whatsapp-la-events",
+      "seenIn": [
+        "whatsapp-la-events"
+      ],
+      "confidence": 0.45,
+      "needsReview": true,
+      "isSample": true
+    },
+    {
+      "id": "s028",
+      "title": "Meditation & Mussar",
+      "host": "Mishkon Tephilo",
+      "start": "2026-09-09T19:30:00-07:00",
+      "end": "2026-09-09T21:00:00-07:00",
+      "venue": "Mishkon Tephilo",
+      "neighborhood": "venice",
+      "neighborhoodLabel": "Venice",
+      "region": "Beach",
+      "lat": 33.985,
+      "lon": -118.4695,
+      "types": [
+        "spiritual",
+        "learning"
+      ],
+      "ageMin": 25,
+      "ageMax": 65,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 15,
+      "costMax": 15,
+      "description": "Half sitting practice, half Jewish ethical text. Quiet room, no experience needed.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.65,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s030",
+      "title": "Women's Rosh Chodesh Circle",
+      "host": "Open Temple",
+      "start": "2026-09-10T19:00:00-07:00",
+      "end": "2026-09-10T21:00:00-07:00",
+      "venue": "Private home",
+      "neighborhood": "venice",
+      "neighborhoodLabel": "Venice",
+      "region": "Beach",
+      "lat": 33.985,
+      "lon": -118.4695,
+      "types": [
+        "spiritual",
+        "social",
+        "learning"
+      ],
+      "ageMin": 28,
+      "ageMax": 60,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": false,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Women only. New moon, wine, and a conversation that runs long.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.6,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s029",
+      "title": "Grad Student Shabbat",
+      "host": "UCLA Hillel",
+      "start": "2026-09-11T18:30:00-07:00",
+      "end": "2026-09-11T21:30:00-07:00",
+      "venue": "Hillel",
+      "neighborhood": "westwood",
+      "neighborhoodLabel": "Westwood",
+      "region": "Westside",
+      "lat": 34.0633,
+      "lon": -118.4453,
+      "types": [
+        "shabbat-dinner",
+        "shabbat-services",
+        "social"
+      ],
+      "ageMin": 21,
+      "ageMax": 32,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 0,
+      "costMax": 10,
+      "description": "Grad and professional students. Three service options in three rooms, one dinner.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.75,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s024",
+      "title": "Rosh Hashanah Dinner for 20s & 30s",
+      "host": "Base LA",
+      "start": "2026-09-11T19:30:00-07:00",
+      "end": "2026-09-11T23:00:00-07:00",
+      "venue": "Rabbi's home",
+      "neighborhood": "west-hollywood",
+      "neighborhoodLabel": "West Hollywood",
+      "region": "Central",
+      "lat": 34.09,
+      "lon": -118.3617,
+      "types": [
+        "holiday",
+        "shabbat-dinner",
+        "social"
+      ],
+      "ageMin": 22,
+      "ageMax": 38,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": true,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Erev Rosh Hashanah at a rabbi's house. Free, thirty seats, fills in a day.",
+      "url": "https://www.moishehouse.org/",
+      "sourceId": "moishe-house-la",
+      "seenIn": [
+        "moishe-house-la"
+      ],
+      "confidence": 0.8,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s025",
+      "title": "High Holiday Services — No Tickets, No Membership",
+      "host": "IKAR",
+      "start": "2026-09-12T09:00:00-07:00",
+      "end": "2026-09-12T13:30:00-07:00",
+      "venue": "Offsite venue",
+      "neighborhood": "hancock-park",
+      "neighborhoodLabel": "Hancock Park / La Brea",
+      "region": "Central",
+      "lat": 34.0722,
+      "lon": -118.3376,
+      "types": [
+        "holiday",
+        "shabbat-services"
+      ],
+      "ageMin": 0,
+      "ageMax": 120,
+      "singlesOriented": false,
+      "observance": 2,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 0,
+      "costMax": 180,
+      "description": "Pay what you can. Explicitly welcoming to people who have not been in years.",
+      "url": "https://ikar.org/",
+      "sourceId": "ikar",
+      "seenIn": [
+        "ikar"
+      ],
+      "confidence": 0.8,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s026",
+      "title": "Tashlich at the Pier",
+      "host": "Chabad of Marina del Rey",
+      "start": "2026-09-13T17:00:00-07:00",
+      "end": "2026-09-13T18:30:00-07:00",
+      "venue": "Marina jetty",
+      "neighborhood": "marina-del-rey",
+      "neighborhoodLabel": "Marina del Rey",
+      "region": "Beach",
+      "lat": 33.9802,
+      "lon": -118.4517,
+      "types": [
+        "holiday",
+        "outdoors",
+        "spiritual",
+        "family"
+      ],
+      "ageMin": 0,
+      "ageMax": 120,
+      "singlesOriented": false,
+      "observance": 5,
+      "kosher": true,
+      "shomerShabbat": true,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Bread crumbs, short service, shofar over the water. Fifteen minutes if you want it to be.",
+      "url": null,
+      "sourceId": "chabad-la",
+      "seenIn": [
+        "chabad-la"
+      ],
+      "confidence": 0.7,
+      "needsReview": false,
+      "isSample": true
+    },
+    {
+      "id": "s031",
+      "title": "Shabbaton Weekend — Ojai",
+      "host": "Base LA",
+      "start": "2026-09-18T15:00:00-07:00",
+      "end": "2026-09-20T14:00:00-07:00",
+      "venue": "Retreat center",
+      "neighborhood": "online",
+      "neighborhoodLabel": "Online",
+      "region": "Online",
+      "lat": null,
+      "lon": null,
+      "types": [
+        "shabbat-dinner",
+        "shabbat-services",
+        "outdoors",
+        "social"
+      ],
+      "ageMin": 23,
+      "ageMax": 38,
+      "singlesOriented": false,
+      "observance": 3,
+      "kosher": true,
+      "shomerShabbat": true,
+      "mixedGender": true,
+      "prayer": true,
+      "beginnerFriendly": true,
+      "free": false,
+      "costMin": 180,
+      "costMax": 260,
+      "description": "Full weekend offsite, sliding scale, phones collected Friday afternoon. Ninety minutes from the city.",
+      "url": null,
+      "sourceId": "manual",
+      "seenIn": [
+        "manual"
+      ],
+      "confidence": 0.6,
+      "needsReview": true,
+      "isSample": true
+    },
+    {
+      "id": "s027",
+      "title": "Break Fast Potluck",
+      "host": "Silver Lake Jewish Collective",
+      "start": "2026-09-21T19:15:00-07:00",
+      "end": "2026-09-21T22:00:00-07:00",
+      "venue": "Backyard",
+      "neighborhood": "silver-lake",
+      "neighborhoodLabel": "Silver Lake",
+      "region": "Eastside",
+      "lat": 34.0869,
+      "lon": -118.2702,
+      "types": [
+        "holiday",
+        "food",
+        "social"
+      ],
+      "ageMin": 25,
+      "ageMax": 45,
+      "singlesOriented": false,
+      "observance": 1,
+      "kosher": false,
+      "shomerShabbat": false,
+      "mixedGender": true,
+      "prayer": false,
+      "beginnerFriendly": true,
+      "free": true,
+      "costMin": 0,
+      "costMax": 0,
+      "description": "Bring a dish. Fasting not required, nobody is checking.",
+      "url": null,
+      "sourceId": "whatsapp-la-events",
+      "seenIn": [
+        "whatsapp-la-events"
+      ],
+      "confidence": 0.4,
+      "needsReview": true,
+      "isSample": true
+    }
+  ]
+};</script>
+<script>
+/* Event submission form.
+   The design principle: ask a human only for what a model can't reliably infer.
+   A flyer gives up title/date/time/place readily; it almost never states whether
+   the food is kosher or whether there's a mechitza. So the flyer does the easy
+   work and the person does the four hard fields — which keeps this to about
+   thirty seconds while producing exactly the data the list is short of. */
+
+const $ = (id) => document.getElementById(id);
+const el = (tag, props = {}, kids = []) => {
+  const n = Object.assign(document.createElement(tag), props);
+  for (const k of [].concat(kids)) if (k) n.append(k);
+  return n;
+};
+
+main();
+
+async function main() {
+// The vocabulary rides along in data.json, so the form and the list can never
+// disagree about what the levels, facets, neighborhoods, or age bands are.
+const { taxonomy } = window.__DATA__ ?? (await fetch('data.json').then((r) => r.json()));
+
+/* ---------- build the vocabulary-driven controls ---------- */
+
+for (const lv of taxonomy.observanceLevels) {
+  $('observance').append(el('option', { value: String(lv.id), textContent: `${lv.id} — ${lv.label}` }));
+}
+$('observance').addEventListener('change', () => {
+  const lv = taxonomy.observanceLevels.find((l) => String(l.id) === $('observance').value);
+  $('obs-help').textContent = lv ? lv.blurb : 'Describes the general feel. The switches above matter more.';
+});
+
+for (const n of taxonomy.neighborhoods) {
+  $('neighborhood').append(el('option', { value: n.key, textContent: n.label }));
+}
+for (const b of taxonomy.ageBands) {
+  $('ages').append(el('option', { value: b.key, textContent: b.label }));
+}
+
+// Tri-state, because the data is tri-state. "Not sure" is the default and is a
+// real answer — it routes the event to review instead of asserting something false.
+const facetState = {};
+for (const f of taxonomy.facets) {
+  facetState[f.key] = null;
+  const group = el('div', { className: 'facet' }, [
+    el('div', { className: 'facet-q' }, [
+      el('strong', { textContent: f.label }),
+      el('span', { className: 'help', textContent: f.help }),
+    ]),
+  ]);
+  const choices = el('div', { className: 'choices', role: 'group', 'aria-label': f.label });
+  for (const [val, label] of [[true, 'Yes'], [false, 'No'], [null, 'Not sure']]) {
+    const btn = el('button', {
+      type: 'button',
+      className: 'choice' + (val === null ? ' on' : ''),
+      textContent: label,
+    });
+    btn.addEventListener('click', () => {
+      facetState[f.key] = val;
+      for (const sib of choices.children) sib.classList.remove('on');
+      btn.classList.add('on');
+    });
+    choices.append(btn);
+  }
+  group.append(choices);
+  $('facets').append(group);
+}
+
+/* ---------- flyer preview ---------- */
+
+const flyers = [];
+
+function renderPreview() {
+  const box = $('preview');
+  box.replaceChildren();
+  flyers.forEach((f, i) => {
+    box.append(
+      el('figure', { className: 'flyer' }, [
+        el('img', { src: f.url, alt: f.name }),
+        el('figcaption', {}, [
+          el('span', { textContent: f.name }),
+          el('button', {
+            type: 'button',
+            className: 'btn link',
+            textContent: 'remove',
+            onclick: () => { URL.revokeObjectURL(f.url); flyers.splice(i, 1); renderPreview(); },
+          }),
+        ]),
+      ]),
+    );
+  });
+}
+
+function addFiles(list) {
+  for (const f of list) {
+    if (!f.type.startsWith('image/')) continue;
+    flyers.push({ name: f.name, url: URL.createObjectURL(f), size: f.size });
+  }
+  renderPreview();
+}
+
+const drop = $('drop');
+drop.addEventListener('click', () => $('file').click());
+drop.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('file').click(); }
+});
+$('file').addEventListener('change', (e) => addFiles(e.target.files));
+for (const t of ['dragenter', 'dragover']) drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); });
+for (const t of ['dragleave', 'drop']) drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); });
+drop.addEventListener('drop', (e) => e.dataTransfer?.files && addFiles(e.dataTransfer.files));
+
+/* ---------- assemble ---------- */
+
+function parseCost(raw) {
+  const s = raw.trim().toLowerCase();
+  if (!s) return { free: null, costMin: null, costMax: null };
+  if (/free|no charge|donation|pay what/.test(s)) return { free: true, costMin: 0, costMax: 0 };
+  const nums = [...s.matchAll(/(\d+(?:\.\d+)?)/g)].map((m) => Number(m[1]));
+  if (!nums.length) return { free: null, costMin: null, costMax: null };
+  return { free: false, costMin: Math.min(...nums), costMax: Math.max(...nums) };
+}
+
+function buildSubmission() {
+  const band = taxonomy.ageBands.find((b) => b.key === $('ages').value);
+  const cost = parseCost($('cost').value);
+  const date = $('date').value;
+  const time = $('time').value;
+
+  return {
+    _schema: 'j-livelist/submission@1',
+    submittedAt: new Date().toISOString(),
+    submitter: $('submitter').value.trim() || null,
+
+    title: $('title').value.trim() || null,
+    host: $('host').value.trim() || null,
+    // Local wall-clock; the harvester attaches the LA offset for the date.
+    startLocal: date ? `${date}T${time || '19:00'}` : null,
+    neighborhood: $('neighborhood').value || null,
+    url: $('url').value.trim() || null,
+    description: $('blurb').value.trim() || null,
+
+    ageMin: band ? band.min : null,
+    ageMax: band ? band.max : null,
+    ...cost,
+
+    observance: $('observance').value ? Number($('observance').value) : null,
+    ...facetState,
+
+    flyers: flyers.map((f) => f.name),
+    // Anything the submitter left alone stays null on purpose — the pipeline
+    // flags those for review rather than inventing a value.
+    needsReview: true,
+  };
+}
+
+function missingBits(sub) {
+  const gaps = [];
+  if (!sub.title && !sub.description && !sub.flyers.length) gaps.push('a flyer, a name, or some details');
+  if (!sub.startLocal && !sub.flyers.length) gaps.push('a date (or a flyer showing one)');
+  return gaps;
+}
+
+$('build').addEventListener('click', async () => {
+  const sub = buildSubmission();
+  const gaps = missingBits(sub);
+  const out = $('out');
+  out.replaceChildren();
+
+  if (gaps.length) {
+    out.append(
+      el('div', { className: 'verdict warn' }, [
+        el('strong', { textContent: 'Almost — still need ' }),
+        gaps.join(', ') + '.',
+      ]),
+    );
+    $('copy').hidden = true;
+    return;
+  }
+
+  const answered = taxonomy.facets.filter((f) => facetState[f.key] !== null).length;
+  const json = JSON.stringify(sub, null, 2);
+
+  out.append(
+    el('div', { className: 'verdict ok' }, [
+      el('strong', { textContent: 'Ready. ' }),
+      `You answered ${answered} of ${taxonomy.facets.length} of the hard questions` +
+        (answered < taxonomy.facets.length ? ' — the rest will be checked by hand.' : '. That is all of them, thank you.'),
+    ]),
+    flyers.length
+      ? el('p', { className: 'hint', textContent: `Send the ${flyers.length} flyer image${flyers.length === 1 ? '' : 's'} along with this text — the flyer is read separately.` })
+      : null,
+    el('textarea', { className: 'payload', id: 'payload', rows: 12, readOnly: true, value: json }),
+  );
+  $('copy').hidden = false;
+  $('copy').onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(json);
+      $('copy').textContent = 'Copied';
+      setTimeout(() => ($('copy').textContent = 'Copy to clipboard'), 1800);
+    } catch {
+      // Clipboard can be blocked; the textarea is right there either way.
+      $('payload').select();
+      $('copy').textContent = 'Select all, then copy';
+    }
+  };
+});
+}
+
+</script>
