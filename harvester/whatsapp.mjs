@@ -18,7 +18,7 @@ import { readFile, writeFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { parseExport, looksLikeEvent, healthCheck, verdict } from '../shared/wa-parse.mjs';
 
-export { parseExport, looksLikeEvent, healthCheck, toIsoDate, verdict } from '../shared/wa-parse.mjs';
+export { parseExport, parsePasted, looksLikeEvent, healthCheck, toIsoDate, verdict } from '../shared/wa-parse.mjs';
 
 function printCheck(report, { mediaFound = null } = {}) {
   const ok = (b) => (b ? '  ok  ' : ' WARN ');

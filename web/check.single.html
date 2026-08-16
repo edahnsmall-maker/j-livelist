@@ -431,6 +431,43 @@ ul.authors b { font-variant-numeric: tabular-nums; color: var(--text-dim); }
 
 footer .narrow { padding-bottom: 0; }
 
+.paste {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+.paste summary { cursor: pointer; font-weight: 650; font-size: 14.5px; }
+.paste-body { padding-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+.paste-body textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.paste-body .btn { align-self: flex-start; }
+
+.flyers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.flyer { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.flyer img { display: block; width: 100%; height: 170px; object-fit: cover; }
+.flyer figcaption {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  padding: 7px 9px;
+  word-break: break-all;
+}
+
 </style>
 
 <header class="top">
@@ -449,12 +486,27 @@ footer .narrow { padding-bottom: 0; }
     That matters here: a WhatsApp export contains every group member's name, and often their phone number.
   </div>
 
-  <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose or drop your WhatsApp export">
+  <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose or drop an export, or flyer images">
     <div class="drop-icon" aria-hidden="true">↓</div>
-    <p class="drop-main">Drop your export here</p>
-    <p class="drop-sub">the <code>.zip</code> straight from WhatsApp, or the <code>_chat.txt</code> inside it</p>
+    <p class="drop-main">Drop an export or some flyers here</p>
+    <p class="drop-sub">the <code>.zip</code> from WhatsApp, the <code>_chat.txt</code> inside it, or just
+      a handful of shared flyer images</p>
     <input type="file" id="file" multiple accept=".zip,.txt,image/*" hidden>
   </div>
+
+  <details class="paste" id="paste-wrap">
+    <summary>Export disabled in your group? Paste messages instead</summary>
+    <div class="paste-body">
+      <p class="hint">
+        A group admin can switch on WhatsApp's <strong>Advanced Chat Privacy</strong>, which disables
+        "Export chat" for everyone in the group. Copying the posts you actually care about still works.
+        Paste them here — with or without the timestamps, whatever your phone gives you.
+      </p>
+      <textarea id="paste" rows="7" spellcheck="false"
+        placeholder="Paste one or more posts. Separate them with a blank line if they have no timestamps."></textarea>
+      <button class="btn primary" id="paste-go" type="button">Read these posts</button>
+    </div>
+  </details>
 
   <div id="results"></div>
   <div id="candidates"></div>
@@ -662,6 +714,53 @@ function looksLikeEvent(msg) {
   return EVENTISH.reduce((n, re) => n + (re.test(msg.text) ? 1 : 0), 0) >= 2;
 }
 
+/**
+ * Parse text that was pasted rather than exported.
+ *
+ * Needed because a group admin can switch on WhatsApp's Advanced Chat Privacy,
+ * which disables "Export chat" for every member. Copying a few posts you care
+ * about still works, and that is ordinary use of the app — so this accepts
+ * whatever shape that copy comes out in.
+ *
+ * Two shapes turn up:
+ *   - Multi-select copy keeps the "[8/19/26, 9:14 AM] Ari: ..." prefixes, which
+ *     is the export format, so the normal parser handles it.
+ *   - Copying a single message gives bare text with no timestamp at all. Then
+ *     blank-line-separated blocks are treated as separate posts.
+ *
+ * In block mode nothing is filtered out: the person pasted these deliberately,
+ * so the curation already happened.
+ */
+function parsePasted(text) {
+  const parsed = parseExport(text);
+  if (parsed.messages.length) return { ...parsed, mode: 'export' };
+
+  const blocks = text
+    .split(/\n\s*\n/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 15);
+
+  const messages = blocks.map((body) => ({
+    author: null,
+    date: null,
+    time: null,
+    isoDate: null,
+    text: body,
+    attachments: [],
+    mediaOmitted: false,
+    edited: false,
+    deleted: false,
+  }));
+
+  return {
+    messages,
+    systemEvents: [],
+    unparsed: [],
+    meta: { dayFirst: false, totalRecords: messages.length },
+    mode: 'blocks',
+  };
+}
+
 /* ------------------------------------------------------------------ */
 
 function healthCheck({ messages, systemEvents, unparsed, meta }) {
@@ -854,6 +953,39 @@ function renderCandidates(candidates, blobs) {
   }
 }
 
+/** Flyers dropped without a chat file. Nothing to parse — but plenty to say. */
+function renderFlyersOnly(blobs) {
+  const out = $('results');
+  out.replaceChildren(
+    el('div', { className: 'verdict ok' }, [
+      el('strong', { textContent: `${blobs.size} flyer${blobs.size === 1 ? '' : 's'} loaded. ` }),
+      'This is the path that still works when a group has export switched off — you can open a flyer and share it.',
+    ]),
+    el('div', { className: 'panel' }, [
+      el('h3', { textContent: 'Turning these into events' }),
+      el('p', {
+        className: 'hint',
+        textContent:
+          'Reading a flyer means running it through a vision model, which is the one step that cannot happen ' +
+          'in this page: it needs a network call, and this page deliberately makes none. Two ways to do it — ' +
+          'run `npm run whatsapp -- --llm` locally with an API key, or just hand the flyers to Claude in the ' +
+          'conversation and have it extract them. At a few cents each, neither is a cost decision.',
+      }),
+    ]),
+  );
+
+  const grid = el('div', { className: 'flyers' });
+  for (const [name, url] of blobs) {
+    grid.append(
+      el('figure', { className: 'flyer' }, [
+        el('img', { src: url, alt: name, loading: 'lazy' }),
+        el('figcaption', { textContent: name }),
+      ]),
+    );
+  }
+  out.append(grid);
+}
+
 /* ---------- file handling ---------- */
 
 async function handleFiles(fileList) {
@@ -884,11 +1016,19 @@ async function handleFiles(fileList) {
       }
     }
 
+    // Flyers on their own, with no chat file. This is the normal case when a
+    // group has export disabled: you can still open a flyer and share it.
+    if (!chatText && blobs.size) {
+      renderFlyersOnly(blobs);
+      $('drop').classList.add('done');
+      return;
+    }
+
     if (!chatText) {
       $('results').replaceChildren(
         el('div', { className: 'verdict fail' }, [
-          el('strong', { textContent: 'No chat file found. ' }),
-          'Drop the .zip straight from WhatsApp, or the _chat.txt inside it.',
+          el('strong', { textContent: 'Nothing readable in that. ' }),
+          'Drop the .zip from WhatsApp, the _chat.txt inside it, or some flyer images.',
         ]),
       );
       return;
@@ -930,10 +1070,44 @@ async function handleFiles(fileList) {
   }
 }
 
+/** Pasted posts, for groups where export is switched off. */
+function handlePaste(text) {
+  const parsed = parsePasted(text);
+  if (!parsed.messages.length) {
+    $('results').replaceChildren(
+      el('div', { className: 'verdict fail' }, [
+        el('strong', { textContent: 'Nothing to read there. ' }),
+        'Paste at least one post — a couple of sentences is plenty.',
+      ]),
+    );
+    $('candidates').replaceChildren();
+    return;
+  }
+
+  if (parsed.mode === 'export') {
+    // The paste kept its timestamps, so it is export-shaped: full report.
+    renderReport(healthCheck(parsed), null);
+    renderCandidates(parsed.messages.filter(looksLikeEvent), new Map());
+    return;
+  }
+
+  // Bare text. No filtering — these were pasted deliberately.
+  $('results').replaceChildren(
+    el('div', { className: 'verdict ok' }, [
+      el('strong', { textContent: `${parsed.messages.length} post${parsed.messages.length === 1 ? '' : 's'} read. ` }),
+      'No timestamps in this paste, so each block is treated as one post and nothing is filtered out — ' +
+        'you already did the choosing. Dates will be resolved when these are extracted.',
+    ]),
+  );
+  renderCandidates(parsed.messages, new Map());
+}
+
 /* ---------- wiring ---------- */
 
 const drop = $('drop');
 const input = $('file');
+
+$('paste-go').addEventListener('click', () => handlePaste($('paste').value));
 
 drop.addEventListener('click', () => input.click());
 drop.addEventListener('keydown', (e) => {

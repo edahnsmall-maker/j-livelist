@@ -26,12 +26,27 @@
     That matters here: a WhatsApp export contains every group member's name, and often their phone number.
   </div>
 
-  <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose or drop your WhatsApp export">
+  <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose or drop an export, or flyer images">
     <div class="drop-icon" aria-hidden="true">↓</div>
-    <p class="drop-main">Drop your export here</p>
-    <p class="drop-sub">the <code>.zip</code> straight from WhatsApp, or the <code>_chat.txt</code> inside it</p>
+    <p class="drop-main">Drop an export or some flyers here</p>
+    <p class="drop-sub">the <code>.zip</code> from WhatsApp, the <code>_chat.txt</code> inside it, or just
+      a handful of shared flyer images</p>
     <input type="file" id="file" multiple accept=".zip,.txt,image/*" hidden>
   </div>
+
+  <details class="paste" id="paste-wrap">
+    <summary>Export disabled in your group? Paste messages instead</summary>
+    <div class="paste-body">
+      <p class="hint">
+        A group admin can switch on WhatsApp's <strong>Advanced Chat Privacy</strong>, which disables
+        "Export chat" for everyone in the group. Copying the posts you actually care about still works.
+        Paste them here — with or without the timestamps, whatever your phone gives you.
+      </p>
+      <textarea id="paste" rows="7" spellcheck="false"
+        placeholder="Paste one or more posts. Separate them with a blank line if they have no timestamps."></textarea>
+      <button class="btn primary" id="paste-go" type="button">Read these posts</button>
+    </div>
+  </details>
 
   <div id="results"></div>
   <div id="candidates"></div>

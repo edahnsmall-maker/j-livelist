@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { parseExport, looksLikeEvent, healthCheck, toIsoDate } from './whatsapp.mjs';
+import { parseExport, parsePasted, looksLikeEvent, healthCheck, toIsoDate } from './whatsapp.mjs';
 
 // A realistic iOS export. Note the invisible characters WhatsApp actually
 // emits: U+200E (LRM) at line starts and before attachments, and U+202F
@@ -125,4 +125,27 @@ test('an unrecognized format reports zero messages rather than inventing them', 
   assert.equal(parsed.messages.length, 0);
   assert.equal(parsed.unparsed.length, 2);
   assert.equal(healthCheck(parsed).messages, 0);
+});
+
+test('pasted text with timestamps is treated as an export', () => {
+  const parsed = parsePasted(
+    '[8/19/26, 9:14:02 AM] Ari: Shabbat dinner Friday 7:30pm, RSVP by Thursday\n' +
+    '[8/19/26, 9:15:00 AM] Dana: thanks!',
+  );
+  assert.equal(parsed.mode, 'export');
+  assert.equal(parsed.messages.length, 2);
+  assert.equal(parsed.messages.filter(looksLikeEvent).length, 1);
+});
+
+test('pasted text without timestamps becomes one candidate per block', () => {
+  // The case when a group has export disabled and you copy posts by hand.
+  const parsed = parsePasted(
+    'Shabbat dinner this Friday 7:30pm in Pico-Robertson, $18\n\n' +
+    'Torah on Tap next Wednesday at a bar in Los Feliz\n\n' +
+    'ok',   // too short to be a post
+  );
+  assert.equal(parsed.mode, 'blocks');
+  assert.equal(parsed.messages.length, 2);
+  assert.equal(parsed.messages[0].author, null);
+  assert.equal(parsed.messages[0].isoDate, null);
 });

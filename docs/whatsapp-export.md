@@ -3,6 +3,33 @@
 You're in the group, which is the whole ballgame — everything below is you
 exercising access you already have. No bot, no extra number, no ban risk.
 
+## If "Export chat" is greyed out
+
+A group admin can switch on WhatsApp's **Advanced Chat Privacy**, which disables
+chat export for every member of that group. Only an admin can turn it back off;
+members cannot override it. If the option is missing or greyed out, that is
+almost certainly why.
+
+Treat that as a decision, not an obstacle. Someone chose that the thread's
+contents shouldn't leave WhatsApp in bulk, and a project that depends on the
+group's goodwill should not be the thing that quietly works around it. **Ask the
+admin.** That conversation tends to go somewhere better than an export anyway —
+usually a co-maintained calendar or a standing invitation to post events
+directly.
+
+What still works without touching the setting:
+
+- **Copy the posts you care about** and paste them into the checker page. Copying
+  a message you can already read is ordinary use of the app. The paste box takes
+  text with or without timestamps.
+- **Share individual flyers.** Opening a flyer and sharing it is also ordinary
+  use, and flyers carry the richest event detail in the thread. Drop them into
+  the checker, or hand them to Claude directly and have it extract them.
+
+Where the line is: noting down a handful of events you'd have gone to anyway is
+you using the group. Systematically reconstituting a chat an admin deliberately
+protected is not, regardless of the mechanism. Stay on the first side of that.
+
 ## The easy way: no install, no terminal
 
 Open the **export checker** page, drag the `.zip` straight from WhatsApp onto it,

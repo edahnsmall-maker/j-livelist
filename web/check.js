@@ -2,7 +2,7 @@
    Nothing is uploaded. There is no fetch, no XHR, no form post anywhere in this
    file; the export is read with FileReader and stays in the tab until you close it. */
 
-import { parseExport, looksLikeEvent, healthCheck, verdict } from '../shared/wa-parse.mjs';
+import { parseExport, parsePasted, looksLikeEvent, healthCheck, verdict } from '../shared/wa-parse.mjs';
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, props = {}, kids = []) => {
@@ -152,6 +152,39 @@ function renderCandidates(candidates, blobs) {
   }
 }
 
+/** Flyers dropped without a chat file. Nothing to parse — but plenty to say. */
+function renderFlyersOnly(blobs) {
+  const out = $('results');
+  out.replaceChildren(
+    el('div', { className: 'verdict ok' }, [
+      el('strong', { textContent: `${blobs.size} flyer${blobs.size === 1 ? '' : 's'} loaded. ` }),
+      'This is the path that still works when a group has export switched off — you can open a flyer and share it.',
+    ]),
+    el('div', { className: 'panel' }, [
+      el('h3', { textContent: 'Turning these into events' }),
+      el('p', {
+        className: 'hint',
+        textContent:
+          'Reading a flyer means running it through a vision model, which is the one step that cannot happen ' +
+          'in this page: it needs a network call, and this page deliberately makes none. Two ways to do it — ' +
+          'run `npm run whatsapp -- --llm` locally with an API key, or just hand the flyers to Claude in the ' +
+          'conversation and have it extract them. At a few cents each, neither is a cost decision.',
+      }),
+    ]),
+  );
+
+  const grid = el('div', { className: 'flyers' });
+  for (const [name, url] of blobs) {
+    grid.append(
+      el('figure', { className: 'flyer' }, [
+        el('img', { src: url, alt: name, loading: 'lazy' }),
+        el('figcaption', { textContent: name }),
+      ]),
+    );
+  }
+  out.append(grid);
+}
+
 /* ---------- file handling ---------- */
 
 async function handleFiles(fileList) {
@@ -182,11 +215,19 @@ async function handleFiles(fileList) {
       }
     }
 
+    // Flyers on their own, with no chat file. This is the normal case when a
+    // group has export disabled: you can still open a flyer and share it.
+    if (!chatText && blobs.size) {
+      renderFlyersOnly(blobs);
+      $('drop').classList.add('done');
+      return;
+    }
+
     if (!chatText) {
       $('results').replaceChildren(
         el('div', { className: 'verdict fail' }, [
-          el('strong', { textContent: 'No chat file found. ' }),
-          'Drop the .zip straight from WhatsApp, or the _chat.txt inside it.',
+          el('strong', { textContent: 'Nothing readable in that. ' }),
+          'Drop the .zip from WhatsApp, the _chat.txt inside it, or some flyer images.',
         ]),
       );
       return;
@@ -228,10 +269,44 @@ async function handleFiles(fileList) {
   }
 }
 
+/** Pasted posts, for groups where export is switched off. */
+function handlePaste(text) {
+  const parsed = parsePasted(text);
+  if (!parsed.messages.length) {
+    $('results').replaceChildren(
+      el('div', { className: 'verdict fail' }, [
+        el('strong', { textContent: 'Nothing to read there. ' }),
+        'Paste at least one post — a couple of sentences is plenty.',
+      ]),
+    );
+    $('candidates').replaceChildren();
+    return;
+  }
+
+  if (parsed.mode === 'export') {
+    // The paste kept its timestamps, so it is export-shaped: full report.
+    renderReport(healthCheck(parsed), null);
+    renderCandidates(parsed.messages.filter(looksLikeEvent), new Map());
+    return;
+  }
+
+  // Bare text. No filtering — these were pasted deliberately.
+  $('results').replaceChildren(
+    el('div', { className: 'verdict ok' }, [
+      el('strong', { textContent: `${parsed.messages.length} post${parsed.messages.length === 1 ? '' : 's'} read. ` }),
+      'No timestamps in this paste, so each block is treated as one post and nothing is filtered out — ' +
+        'you already did the choosing. Dates will be resolved when these are extracted.',
+    ]),
+  );
+  renderCandidates(parsed.messages, new Map());
+}
+
 /* ---------- wiring ---------- */
 
 const drop = $('drop');
 const input = $('file');
+
+$('paste-go').addEventListener('click', () => handlePaste($('paste').value));
 
 drop.addEventListener('click', () => input.click());
 drop.addEventListener('keydown', (e) => {

@@ -168,6 +168,53 @@ export function looksLikeEvent(msg) {
   return EVENTISH.reduce((n, re) => n + (re.test(msg.text) ? 1 : 0), 0) >= 2;
 }
 
+/**
+ * Parse text that was pasted rather than exported.
+ *
+ * Needed because a group admin can switch on WhatsApp's Advanced Chat Privacy,
+ * which disables "Export chat" for every member. Copying a few posts you care
+ * about still works, and that is ordinary use of the app — so this accepts
+ * whatever shape that copy comes out in.
+ *
+ * Two shapes turn up:
+ *   - Multi-select copy keeps the "[8/19/26, 9:14 AM] Ari: ..." prefixes, which
+ *     is the export format, so the normal parser handles it.
+ *   - Copying a single message gives bare text with no timestamp at all. Then
+ *     blank-line-separated blocks are treated as separate posts.
+ *
+ * In block mode nothing is filtered out: the person pasted these deliberately,
+ * so the curation already happened.
+ */
+export function parsePasted(text) {
+  const parsed = parseExport(text);
+  if (parsed.messages.length) return { ...parsed, mode: 'export' };
+
+  const blocks = text
+    .split(/\n\s*\n/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 15);
+
+  const messages = blocks.map((body) => ({
+    author: null,
+    date: null,
+    time: null,
+    isoDate: null,
+    text: body,
+    attachments: [],
+    mediaOmitted: false,
+    edited: false,
+    deleted: false,
+  }));
+
+  return {
+    messages,
+    systemEvents: [],
+    unparsed: [],
+    meta: { dayFirst: false, totalRecords: messages.length },
+    mode: 'blocks',
+  };
+}
+
 /* ------------------------------------------------------------------ */
 
 export function healthCheck({ messages, systemEvents, unparsed, meta }) {
